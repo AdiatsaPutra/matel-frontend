@@ -9,7 +9,7 @@
         >
         <div class="mx-2"></div>
         <v-btn height="40px" color="orange" dark @click="uploadModal(true)"
-        >Update Semua Data Kendaraan</v-btn
+        >Ganti Semua Data</v-btn
         >
         <div class="mx-2"></div>
         <v-btn height="40px" color="purple" dark @click="downloadTemplate"
