@@ -84,16 +84,16 @@ export default {
           title: "Info Pembayaran",
           to: "/info-pembayaran",
         },
-        {
-          icon: "mdi-credit-card-outline",
-          title: "Nomor Rekening",
-          to: "/nomor-rekening",
-        },
-        {
-          icon: "mdi-face-agent",
-          title: "Customer Support",
-          to: "/customer-support",
-        },
+        // {
+        //   icon: "mdi-credit-card-outline",
+        //   title: "Nomor Rekening",
+        //   to: "/nomor-rekening",
+        // },
+        // {
+        //   icon: "mdi-face-agent",
+        //   title: "Customer Support",
+        //   to: "/customer-support",
+        // },
       ],
       right: true,
       rightDrawer: false,

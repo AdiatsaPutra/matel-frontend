@@ -8,12 +8,12 @@
           >Upload Data Kendaraan</v-btn
         >
         <div class="mx-2"></div>
-        <v-btn height="40px" color="purple" dark @click="downloadTemplate"
-        >Download Template</v-btn
+        <v-btn height="40px" color="orange" dark @click="uploadModal(true)"
+        >Update Semua Data Kendaraan</v-btn
         >
         <div class="mx-2"></div>
-        <v-btn height="40px" color="orange" dark @click="uploadModal(true)"
-          >Update Semua Data Kendaraan</v-btn
+        <v-btn height="40px" color="purple" dark @click="downloadTemplate"
+        >Download Template</v-btn
         >
         <div class="mx-2"></div>
         <v-text-field
@@ -22,7 +22,7 @@
           solo
           dense
           prepend-inner-icon="mdi-magnify"
-          @input="debouncedFetchLeasing"
+          @input="fetchLeasing"
         ></v-text-field>
       </v-row>
     </div>

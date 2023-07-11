@@ -7,8 +7,11 @@
         <div>
           <p class="text-h6 ma-0 primary--text">TOTAL LEASING</p>
           <p class="text-body-1 mb-2">Jumlah leasing</p>
-          <h1 class="text-h3 ma-0 font-weight-bold">
-            {{ loading ? 'Loading...' : homeTotal.leasing }}
+          <div v-if="loading" class="text-medium ma-0">
+           Loading...
+          </div>
+          <h1 v-else class="text-h3 ma-0 font-weight-bold">
+            {{ addCommas(homeTotal.leasing) }}
           </h1>
         </div>
       </v-card>
@@ -18,8 +21,11 @@
         <div>
           <p class="text-h6 ma-0 primary--text">TOTAL MEMBER TRIAL</p>
           <p class="text-body-1 mb-2">Jumlah member trial</p>
-          <h1 class="text-h3 ma-0 font-weight-bold">
-            {{ loading ? 'Loading...' : homeTotal.trial_members }}
+          <div v-if="loading" class="text-medium ma-0">
+           Loading...
+          </div>
+          <h1 v-else class="text-h3 ma-0 font-weight-bold">
+            {{ addCommas(homeTotal.trial_members) }}
           </h1>
         </div>
       </v-card>
@@ -29,8 +35,11 @@
         <div>
           <p class="text-h6 ma-0 primary--text">TOTAL MEMBER PREMIUM</p>
           <p class="text-body-1 mb-2">Jumlah member premium</p>
-          <h1 class="text-h3 ma-0 font-weight-bold">
-            {{ loading ? 'Loading...' : homeTotal.premium_members }}
+          <div v-if="loading" class="text-medium ma-0">
+           Loading...
+          </div>
+          <h1 v-else class="text-h3 ma-0 font-weight-bold">
+            {{ addCommas(homeTotal.premium_members) }}
           </h1>
         </div>
       </v-card>
@@ -40,8 +49,11 @@
         <div>
           <p class="text-h6 ma-0 primary--text">TOTAL MEMBER EXPIRED</p>
           <p class="text-body-1 mb-2">Jumlah member expired</p>
-          <h1 class="text-h3 ma-0 font-weight-bold">
-            {{ loading ? 'Loading...' : homeTotal.expired_members }}
+          <div v-if="loading" class="text-medium ma-0">
+           Loading...
+          </div>
+          <h1 v-else class="text-h3 ma-0 font-weight-bold">
+            {{ addCommas(homeTotal.expired_members) }}
           </h1>
         </div>
       </v-card>
@@ -51,8 +63,11 @@
         <div>
           <p class="text-h6 ma-0 primary--text">TOTAL DATA KENDARAAN</p>
           <p class="text-body-1 mb-2">Jumlah data kendaraan</p>
-          <h1 class="text-h3 ma-0 font-weight-bold">
-            {{ loading ? 'Loading...' : homeTotal.kendaraan }}
+          <div v-if="loading" class="text-medium ma-0">
+           Loading...
+          </div>
+          <h1 v-else class="text-h3 ma-0 font-weight-bold">
+            {{ addCommas(homeTotal.kendaraan) }}
           </h1>
         </div>
       </v-card>
@@ -118,6 +133,15 @@ export default {
                 this.loading = false;
             });
         },
+         addCommas(n){
+          var rx=  /(\d+)(\d{3})/;
+          return String(n).replace(/^\d+/, function(w){
+              while(rx.test(w)){
+                  w= w.replace(rx, '$1.$2');
+              }
+              return w;
+          });
+}
     },
     components: { LeasingChart }
 };
