@@ -12,21 +12,21 @@
         >
         <div v-if="cabang.length > 0" class="mx-2"></div>
         <v-btn
+        v-if="cabang.length > 0"
+        height="40px"
+        color="red"
+        dark
+        @click="showGantikanData = true"
+        >Gantikan Data</v-btn
+        >
+        <div v-if="cabang.length > 0" class="mx-2"></div>
+        <v-btn
           v-if="cabang.length > 0"
           height="40px"
           color="purple"
           dark
           @click="downloadTemplate"
           >Download Template</v-btn
-        >
-        <div v-if="cabang.length > 0" class="mx-2"></div>
-        <v-btn
-          v-if="cabang.length > 0"
-          height="40px"
-          color="red"
-          dark
-          @click="showGantikanData = true"
-          >Gantikan Data</v-btn
         >
         <div v-if="cabang.length > 0" class="mx-2"></div>
         <v-select
