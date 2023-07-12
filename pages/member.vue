@@ -8,7 +8,6 @@
           dense
           solo
           prepend-inner-icon="mdi-magnify"
-          @input="searchUsers"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -176,15 +175,20 @@ export default {
       this.isConfirmModalOpen = true;
     },
     closeConfirmModal() {
+      
       this.isConfirmModalOpen = false;
     },
     deleteUser(user) {
+      this.$axios
+        .delete(`delete-member/${this.selectedUser.id}`)
+        .then((response) => {
+            this.closeEditModal();
+            this.fetchUser();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       this.closeConfirmModal();
-    },
-    searchUsers() {
-      setTimeout(() => {
-        this.fetchUser();
-      }, 300);
     },
     getStatusText(status) {
       switch (status) {
@@ -203,8 +207,6 @@ export default {
         user_id: this.selectedUser.id,
         subscription_month: this.editUserSubscription,
       };
-
-      console.log(params)
 
       this.$axios
         .post('update-member', params)
