@@ -213,6 +213,8 @@ export default {
           this.fetchUser()
         })
         .catch((error) => {
+          this.closeEditModal();
+          this.fetchUser()
         });
     },
   },
