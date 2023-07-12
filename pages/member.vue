@@ -209,11 +209,10 @@ export default {
       this.$axios
         .post('update-member', params)
         .then((response) => {
-          console.log(response);
           this.closeEditModal();
+          this.fetchUser()
         })
         .catch((error) => {
-          console.error(error);
         });
     },
   },
