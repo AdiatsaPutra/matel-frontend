@@ -3,32 +3,6 @@
     <div v-if="!isDetail">
       <div>Data Kendaraan {{ leasingName }}</div>
       <v-row class="pt-5 mx-1">
-        <v-btn
-          v-if="cabang.length > 0"
-          height="40px"
-          color="primary"
-          @click="showUpload"
-          >Upload Data Kendaraan</v-btn
-        >
-        <div v-if="cabang.length > 0" class="mx-2"></div>
-        <v-btn
-        v-if="cabang.length > 0"
-        height="40px"
-        color="red"
-        dark
-        @click="showGantikanData = true"
-        >Gantikan Data</v-btn
-        >
-        <div v-if="cabang.length > 0" class="mx-2"></div>
-        <v-btn
-          v-if="cabang.length > 0"
-          height="40px"
-          color="purple"
-          dark
-          @click="downloadTemplate"
-          >Download Template</v-btn
-        >
-        <div v-if="cabang.length > 0" class="mx-2"></div>
         <v-select
           v-model="selectedCabang"
           :items="cabangFilter"
@@ -165,24 +139,10 @@
       Total Data: {{ total }}
     </div> -->
 
-    <div>
-      <v-alert
-        v-if="cabang.length === 0"
-        v-model="alert"
-        tonal
-        close-label="Close Alert"
-        color="warning"
-        dark
-        title="Closable Alert"
-      >
-        Tambah cabang sebelum upload
-      </v-alert>
-    </div>
-
     <v-data-table
       v-if="!isDetail"
       :headers="headers"
-      :items="items"
+      :items="numberedItems"
       :search="search"
       :loading="loading"
     >
@@ -198,112 +158,6 @@
         </v-btn> -->
       </template>
     </v-data-table>
-
-    <v-dialog v-model="showUploadModal" max-width="500">
-      <v-card class="pa-5">
-        <div class="text-h6 purple--text text--darken-4">UPLOAD DATA</div>
-        <div class="py-1"></div>
-
-        <v-alert v-show="isError === true" type="error">
-          <div>
-            <div class="text-subtitle-1 text--black">
-              {{ error }}
-            </div>
-          </div>
-        </v-alert>
-        <div class="py-1"></div>
-
-        <v-select
-          v-model="selectedUploadCabang"
-          :items="cabang"
-          item-text="nama_cabang"
-          item-value="id"
-          solo
-          dense
-          placeholder="Pilih Cabang"
-        ></v-select>
-
-        <v-file-input
-          v-model="file"
-          multiple
-          dense
-          placeholder="Pilih File"
-          solo
-          prepend-icon
-          @change="handleFileChange"
-        ></v-file-input>
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="red white--text"
-            height="32"
-            @click="showUploadModal = false"
-          >
-            Batal
-          </v-btn>
-          <div class="mx-2"></div>
-          <v-btn
-            color="primary white--text"
-            height="32"
-            :disabled="isLoading || success || file === null"
-            :loading="isLoading"
-            @click="uploadFile"
-          >
-            Upload
-          </v-btn>
-        </v-row>
-        <div class="py-2"></div>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="showModal" max-width="500">
-      <v-card class="pa-5">
-        <div class="text-h6">Download Template</div>
-
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-btn color="red" dark @click="showDownloadModal">Batal</v-btn>
-          <div class="mx-2"></div>
-          <v-btn color="primary" @click="downloadTemplate">Download</v-btn>
-        </v-row>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="showGantikanData" max-width="500">
-      <v-card class="pa-5">
-        <div class="text-h6">Gantikan Data</div>
-
-        <div class="mb-5"></div>
-        <v-file-input
-          v-model="file"
-          multiple
-          dense
-          placeholder="Pilih File"
-          solo
-          prepend-icon
-          @change="handleFileChange"
-        ></v-file-input>
-        <div class="mb-2"></div>
-        <v-select
-          v-model="selectedGantikanDataCabang"
-          :items="cabang"
-          item-text="nama_cabang"
-          item-value="nama_cabang"
-          solo
-          dense
-          placeholder="Pilih Cabang"
-        ></v-select>
-        <div class="mb-5"></div>
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-btn color="red" dark @click="showGantikanData = false"
-            >Batal</v-btn
-          >
-          <div class="mx-2"></div>
-          <v-btn color="primary" @click="deleteKendaraan">Gantikan Data</v-btn>
-        </v-row>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -336,7 +190,7 @@ export default {
       total: 10,
       search: "",
       currentPage: 1,
-      limit: 100,
+      limit: -1,
       debouncedFetchLeasing: debounce(this.fetchLeasing, 300),
       isDetail: false,
       selectedLeasing: null,
@@ -345,7 +199,6 @@ export default {
       selectedGantikanDataCabang: null,
       selectedUploadCabang: null,
       showModal: false,
-      showGantikanData: false,
       showUploadModal: false,
       isLoading: false,
       success: false,
@@ -372,23 +225,24 @@ export default {
       const startIndex = (this.currentPage - 1) * this.limit;
       return this.items.map((item, index) => ({
         ...item,
-        id: startIndex + index + 1,
+        id: index + 1,
       }));
     },
   },
-
   mounted() {
     this.fetchLeasing();
-    this.fetchCabang();
-    this.fetchLeasingTotal();
     this.$store.watch(
       (state) => state.myString,
       (newString) => {
         if (newString === "Cabang Added") {
           this.fetchCabang();
+        } else if (newString === "Kendaraan Added") {
+          this.fetchLeasing();
         }
       }
     );
+    this.fetchCabang();
+    this.fetchLeasingTotal();
   },
   methods: {
     fetchCabang() {
@@ -416,9 +270,15 @@ export default {
     fetchLeasingTotal() {
       this.loading = true;
       this.$axios
-        .get("home")
+        .get("home", {
+          params: {
+            leasing: this.leasingName,
+            cabang: this.cabangName,
+          }
+        })
         .then((response) => {
           this.total = response.data.data.leasing;
+          console.log(response.data.data)
           this.loading = false;
         })
         .catch((error) => {
@@ -450,71 +310,6 @@ export default {
         })
         .finally(() => {
           this.loading = false;
-        });
-    },
-    handleFileChange() {
-      this.formData = new FormData();
-
-      if (this.file) {
-        this.formData.append("file", this.file[0]);
-      }
-      this.formData.append("leasing_name", this.leasingName);
-    },
-    uploadFile() {
-      if (this.formData) {
-        const cabangFiltered = this.cabang.filter(
-          (item) => item.id === this.selectedUploadCabang
-        );
-        const cabangName = cabangFiltered[0].nama_cabang;
-        this.formData.append("cabang_name", cabangName);
-        this.success = false;
-        this.isError = false;
-        this.isLoading = true;
-        this.$axios
-          .post("upload-leasing-per-cabang", this.formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((response) => {
-            this.formData = null;
-            this.success = true;
-            this.isLoading = false;
-            this.time = response.data.data;
-            this.showUploadModal = false;
-            this.selectedUploadCabang = null;
-            this.file = null;
-            this.fetchLeasing();
-          })
-          .catch((error) => {
-            this.showUploadModal = false;
-            this.isError = true;
-            this.isLoading = false;
-            this.error = error.message;
-            console.log("Error");
-          });
-      }
-    },
-    downloadTemplate() {
-      const endpoint = "/download-template-cabang";
-      const url = this.$axios.defaults.baseURL + endpoint;
-
-      this.$axios
-        .get("download-template-cabang")
-        .then((response) => {
-          const downloadLink = document.createElement("a");
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const filename = "leasing-template-cabang.csv";
-          downloadLink.href = url;
-          downloadLink.setAttribute("download", filename);
-          document.body.appendChild(downloadLink);
-          downloadLink.click();
-          document.body.removeChild(downloadLink);
-          window.URL.revokeObjectURL(url);
-          this.showModal = false;
-        })
-        .catch((error) => {
-          console.error("Failed to download file:", error);
         });
     },
     deleteKendaraan() {
@@ -553,7 +348,6 @@ export default {
                 this.isError = true;
                 this.isLoading = false;
                 this.error = error.message;
-                console.log("Error");
                 this.fetchLeasing();
               });
           }
@@ -586,10 +380,6 @@ export default {
     },
     editItem(itemId) {},
     deleteItem(itemId) {},
-    showUpload() {
-      this.showUploadModal = !this.showUploadModal;
-      this.success = false
-    },
     showDownloadModal() {
       this.showModal = !this.showModal;
       this.selectedDownloadCabang = null;

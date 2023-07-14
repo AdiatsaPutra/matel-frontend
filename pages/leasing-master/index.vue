@@ -47,48 +47,39 @@
 
     <!-- Detail view -->
     <div v-else>
-      <v-row>
-        <v-col cols="12" md="6">
-          <v-card class="pa-5" height="27em">
-            <v-btn
-              class="py-0"
-              outlined
-              @click="showDetail = false"
-              color="primary"
-            >
-              <v-icon>mdi-arrow-left-thin</v-icon>
-              <div>Kembali</div>
-            </v-btn>
-            <div class="mb-2"></div>
-            <div class="text-h6">Detail Leasing</div>
-            <div class="mb-2"></div>
+      <v-card class="pa-5" >
+        <v-btn
+          class="py-0"
+          outlined
+          @click="showDetail = false"
+          color="primary"
+        >
+          <v-icon>mdi-arrow-left-thin</v-icon>
+          <div>Kembali</div>
+        </v-btn>
+        <div class="mb-2"></div>
+        <div class="text-h6">Detail Leasing</div>
+        <div class="mb-2"></div>
+        <v-row>
+          <v-col cols="12" sm="4">
             <div class="text-body">Nama Leasing</div>
-            <v-text-field
-              v-model="selectedLeasing.nama_leasing"
-              outlined
-              dense
-              readonly
-            ></v-text-field>
+            <div class="text-body font-weight-bold">{{ selectedLeasing.nama_leasing }}</div>
+          </v-col>
+          <v-col cols="12" sm="4">
             <div class="text-body">Nama PIC</div>
-            <v-text-field
-              v-model="selectedLeasing.nama_pic"
-              outlined
-              dense
-              readonly
-            ></v-text-field>
+            <div class="text-body font-weight-bold">{{ selectedLeasing.nama_pic }}</div>
+          </v-col>
+          <v-col cols="12" sm="4">
             <div class="text-body">No HP PIC</div>
-            <v-text-field
-              v-model="selectedLeasing.no_hp_pic"
-              outlined
-              dense
-              readonly
-            ></v-text-field>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="6">
-          <LeasingMasterDetail :leasingId="selectedLeasing.id" />
-        </v-col>
-      </v-row>
+            <div class="text-body font-weight-bold">{{ selectedLeasing.no_hp_pic }}</div>
+          </v-col>
+        </v-row>
+      </v-card>
+      <div class="mb-10"></div>
+      <LeasingMasterDetail 
+      :leasingId="selectedLeasing.id" 
+      :leasingName="selectedLeasing.nama_leasing"
+      />
       <div class="mb-10"></div>
       <DataKendaraan
         :leasingId="selectedLeasing.id"

@@ -42,11 +42,11 @@
             <v-alert v-show="isError" type="error">
               <div>{{ errorMessage }}</div>
             </v-alert>
-            <div class="mt-6"></div>
-            <v-row class="align-center justify-center">
+            <!-- <div class="mt-6"></div> -->
+            <!-- <v-row class="align-center justify-center">
               <p>Belum memiliki akun?&nbsp;</p>
               <p class="purple--text text--darken-2">Daftar</p>
-            </v-row>
+            </v-row> -->
           </v-flex>
         </v-layout>
       </v-container>
