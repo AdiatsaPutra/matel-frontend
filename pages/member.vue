@@ -14,16 +14,16 @@
 
     <v-data-table :headers="headers" :items="users">
       <template v-slot:item.status="{ item }">
-        {{ getStatusText(item.status) }}
+        {{ getStatusText(item.status, item.end_subscription) }}
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn color="primary" dark @click="openDetailModal(item)">
+        <v-btn color="primary" height="30px" dark @click="openDetailModal(item)">
           Detail
         </v-btn>
-        <v-btn color="primary" outlined dark @click="openEditModal(item)">
+        <v-btn color="primary" height="30px" outlined dark @click="openEditModal(item)">
           Ubah Subscription
         </v-btn>
-        <v-btn color="red" dark @click="openConfirmModal(item)"> Hapus </v-btn>
+        <v-btn color="red" height="30px" dark @click="openConfirmModal(item)"> Hapus </v-btn>
       </template>
     </v-data-table>
 
@@ -46,7 +46,7 @@
             outlined
           ></v-text-field>
           <v-text-field
-            :value="getStatusText(selectedUser.status)"
+            :value="getStatusText(selectedUser.status, selectedUser.end_subscription)"
             label="Status"
             readonly
             outlined
@@ -126,6 +126,9 @@ export default {
         { text: "Nama", value: "username" },
         { text: "Email", value: "email" },
         { text: "Status", value: "status" },
+        { text: "Jumlah Berlangganan", value: "subscription_month" },
+        { text: "Mulai Berlangganan", value: "start_subscrition" },
+        { text: "Akhir Berlangganan", value: "end_subscription" },
         { text: "Actions", value: "actions", sortable: false },
       ],
       subscriptionOptions: [
@@ -175,7 +178,6 @@ export default {
       this.isConfirmModalOpen = true;
     },
     closeConfirmModal() {
-      
       this.isConfirmModalOpen = false;
     },
     deleteUser(user) {
@@ -190,16 +192,21 @@ export default {
         });
       this.closeConfirmModal();
     },
-    getStatusText(status) {
-      switch (status) {
-        case 0:
-          return "Trial";
-        case 1:
-          return "Premium";
-        case 2:
-          return "Expired";
-        default:
-          return "";
+    getStatusText(status, end) {
+      const currentDate = new Date();
+
+      const subscriptionEndDate = new Date(end);
+
+      if (subscriptionEndDate > currentDate) {
+        if (status === 0) {
+          return "Trial"
+        } else if (status === 1) {
+          return "Premium"
+        } else {
+          return ""
+        }
+      } else {
+        return "Expired"
       }
     },
     saveUserChanges() {

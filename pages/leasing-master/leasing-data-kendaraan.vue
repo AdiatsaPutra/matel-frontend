@@ -200,7 +200,7 @@ export default {
   computed: {
     headers() {
       return [
-        { text: "No", value: "id" },
+        { text: "No", value: "no" },
         { text: "Leasing", value: "leasing" },
         { text: "Cabang", value: "cabang" },
         { text: "Nama Debitur", value: "nama_debitur" },
@@ -213,7 +213,7 @@ export default {
       const startIndex = (this.currentPage - 1) * this.limit;
       return this.items.map((item, index) => ({
         ...item,
-        id: index + 1,
+        no: index + 1,
       }));
     },
   },
@@ -309,6 +309,8 @@ export default {
     },
     viewDetail(itemId) {
       this.selectedLeasing = this.items.find((item) => item.id === itemId);
+      console.log(this.items[0])
+      console.log(itemId)
       this.isDetail = true;
     },
     selectCabang(item) {
