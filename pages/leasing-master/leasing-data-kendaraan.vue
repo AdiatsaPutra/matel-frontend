@@ -3,18 +3,6 @@
     <div v-if="!isDetail">
       <div>Data Kendaraan {{ leasingName }}</div>
       <v-row class="pt-5 mx-1">
-        <v-select
-          v-model="selectedCabang"
-          :items="cabangFilter"
-          :disabled="loading"
-          solo
-          dense
-          item-text="nama_cabang"
-          item-value="id"
-          placeholder="Filter Cabang"
-          @change="selectCabang(selectedCabang)"
-        ></v-select>
-        <div class="mx-2"></div>
         <v-text-field
           v-model="search"
           placeholder="Cari berdasarkan leasing, cabang, atau nomor polisi"
@@ -146,8 +134,8 @@
       :search="search"
       :loading="loading"
     >
-      <template v-slot:item.sisa_hutang="{ item }">
-        {{ formatCurrency(item.sisa_hutang) }}
+      <template v-slot:item.CreatedAt="{ item }">
+        {{ new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "long", year: "numeric" }).format(items.CreatedAt) }}
       </template>
       <template v-slot:item.actions="{ item }">
         <v-btn color="primary" height="27px" dark @click="viewDetail(item.id)">
@@ -196,7 +184,6 @@ export default {
       selectedLeasing: null,
       selectedCabang: null,
       selectedDownloadCabang: null,
-      selectedGantikanDataCabang: null,
       selectedUploadCabang: null,
       showModal: false,
       showUploadModal: false,
@@ -217,7 +204,7 @@ export default {
         { text: "Cabang", value: "cabang" },
         { text: "Nama Debitur", value: "nama_debitur" },
         { text: "No Polisi", value: "nomor_polisi" },
-        { text: "Sisa Hutang", value: "sisa_hutang" },
+        { text: "Tanggal Upload", value: "CreatedAt" },
         { text: "Actions", value: "actions" },
       ];
     },
@@ -278,7 +265,6 @@ export default {
         })
         .then((response) => {
           this.total = response.data.data.leasing;
-          console.log(response.data.data)
           this.loading = false;
         })
         .catch((error) => {
@@ -312,53 +298,6 @@ export default {
           this.loading = false;
         });
     },
-    deleteKendaraan() {
-      this.loading = true;
-
-      this.$axios
-        .delete("delete-kendaraan", {
-          params: {
-            leasing_id: this.leasingId,
-            leasing: this.leasingName,
-            cabang: this.selectedGantikanDataCabang,
-          },
-        })
-        .then((response) => {
-          if (this.formData) {
-            const cabangFiltered = this.cabang.filter(
-              (item) => item.nama_cabang === this.selectedGantikanDataCabang
-            );
-            const cabangName = cabangFiltered[0].nama_cabang;
-            this.formData.append("cabang_name", cabangName);
-            this.success = false;
-            this.isError = false;
-            this.isLoading = true;
-            this.$axios
-              .post("upload-leasing", this.formData, {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              })
-              .then((response) => {
-                this.showGantikanData = false;
-                this.getLeasing();
-              })
-              .catch((error) => {
-                this.showGantikanData = false;
-                this.isError = true;
-                this.isLoading = false;
-                this.error = error.message;
-                this.fetchLeasing();
-              });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
     formatCurrency(value) {
       const formatter = new Intl.NumberFormat("id-ID", {
         style: "currency",
@@ -384,10 +323,7 @@ export default {
       this.showModal = !this.showModal;
       this.selectedDownloadCabang = null;
     },
-    showGantikanDataModal() {
-      this.gantikanData = !this.gantikanData;
-      this.selectedGantikanDataCabang = null;
-    },
+    
   },
 };
 </script>
