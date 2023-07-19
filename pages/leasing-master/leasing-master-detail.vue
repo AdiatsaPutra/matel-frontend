@@ -58,11 +58,14 @@
       </v-row>
       <v-data-table
         :headers="headers"
-        :items="cabang"
+        :items="cabangWithTotal"
         :search="search"
         :options.sync="options"
         :loading="loading"
       >
+        <template v-slot:item.latest_created_at="{ item }">
+          {{ item.latest_created_at === "" ? "-" :  new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "long", year: "numeric" }).format(new Date(item.latest_created_at)) }}
+        </template>
         <template v-slot:item.actions="{ item }">
           <v-btn
             color="secondary"
@@ -157,13 +160,7 @@
         <div class="text-h6 purple--text text--darken-4">UPLOAD DATA</div>
         <div class="py-1"></div>
 
-        <v-alert v-show="isError === true" type="error">
-          <div>
-            <div class="text-subtitle-1 text--black">
-              {{ error }}
-            </div>
-          </div>
-        </v-alert>
+       
         <div class="py-1"></div>
 
         <v-select
@@ -198,7 +195,7 @@
           <v-btn
             color="primary white--text"
             height="32"
-            :disabled="loading || success || file === null"
+            :disabled="loading || success"
             :loading="loading"
             @click="uploadFile"
           >
@@ -209,18 +206,6 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="showModal" max-width="500">
-      <v-card class="pa-5">
-        <div class="text-h6">Download Template</div>
-
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-btn color="red" dark @click="showDownloadModal">Batal</v-btn>
-          <div class="mx-2"></div>
-          <v-btn color="primary" @click="downloadTemplate">Download</v-btn>
-        </v-row>
-      </v-card>
-    </v-dialog>
 
     <v-dialog v-model="showGantikanData" max-width="500">
       <v-card class="pa-5">
@@ -270,17 +255,23 @@ export default {
   data() {
     return {
       cabang: [],
+      cabangWithTotal: [],
       headers: [
         { text: "Nama Cabang", value: "nama_cabang" },
+        { text: "Tanggal Upload", value: "latest_created_at" },
+        { text: "Total kendaraan", value: "kendaraan_total" },
         { text: "Actions", value: "actions", sortable: false },
       ],
       search: "",
       total: 0,
       limit: 5,
       options: {},
+      file: null,
       loading: false,
+      success: false,
       createDialog: false,
       showUploadModal: false,
+      selectedGantikanDataCabang: null,
       editDialog: false,
       deleteDialog: false,
       showGantikanData: false,
@@ -334,6 +325,26 @@ export default {
         .then((response) => {
           this.cabang = response.data.data.cabang;
           this.total = response.data.data.total;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+      },
+      fetchDataWithTotal() {
+        this.loading = true;
+        this.$axios
+        .get("cabang-with-total", {
+          params:{
+            leasing_id: this.leasingId,
+          }
+        })
+        .then((response) => {
+          if(response.data.data != null){
+            this.cabangWithTotal = response.data.data;
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -448,10 +459,9 @@ export default {
             this.success = true;
             this.loading = false;
             this.time = response.data.data;
-            this.showUploadModal = false;
-            this.selectedUploadCabang = null;
-            this.file = null;
             this.$store.dispatch("updateString", "Kendaraan Added");
+            this.selectedUploadCabang = null;
+            this.showUploadModal = false;
           })
           .catch((error) => {
             this.showUploadModal = false;
@@ -479,7 +489,6 @@ export default {
           this.showModal = false;
         })
         .catch((error) => {
-          console.error("Failed to download file:", error);
         });
     },
     cancelDelete() {
@@ -503,6 +512,7 @@ export default {
     },
     showUpload() {
       this.showUploadModal = !this.showUploadModal;
+      this.loading = false
       this.success = false
     },
     openCreateDialog(createDialog) {
@@ -512,15 +522,77 @@ export default {
       this.selectedLeasing = { ...item };
       this.showDetail = true;
     },
-    
+    deleteKendaraan() {
+      this.loading = true;
+
+      this.$axios
+        .delete("delete-kendaraan", {
+          params: {
+            leasing_id: this.leasingId,
+            leasing: this.leasingName,
+            cabang: this.selectedGantikanDataCabang,
+          },
+        })
+        .then((response) => {
+          if (this.formData) {
+            const cabangFiltered = this.cabang.filter(
+              (item) => item.nama_cabang === this.selectedGantikanDataCabang
+            );
+            const cabangName = cabangFiltered[0].nama_cabang;
+            this.formData.append("cabang_name", cabangName);
+            this.success = false;
+            this.isLoading = true;
+            this.$axios
+              .post("upload-leasing", this.formData, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              })
+              .then((response) => {
+                this.$store.dispatch("updateString", "Kendaraan Added");
+                this.showGantikanData = false;
+              })
+              .catch((error) => {
+                this.$store.dispatch("updateString", "Kendaraan Added");
+                this.showGantikanData = false;
+                this.isLoading = false;
+                this.error = error.message;
+              });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    showGantikanDataModal() {
+      this.gantikanData = !this.gantikanData;
+      this.selectedGantikanDataCabang = null;
+    },
   },
   mounted() {
     this.fetchData();
+    this.fetchDataWithTotal();
+    this.$store.watch(
+      (state) => state.myString,
+      (newString) => {
+        if (newString === "Cabang Added") {
+          this.fetchData();
+          this.fetchDataWithTotal();
+        } else if (newString === "Kendaraan Added") {
+          this.fetchData();
+          this.fetchDataWithTotal();
+        }
+      }
+    );
   },
   watch: {
     search(newValue) {
-      if (newValue === "Cabng Added") {
+      if (newValue === "Cabang Added") {
         this.fetchData();
+        this.fetchDataWithTotal();
       }
     },
   },

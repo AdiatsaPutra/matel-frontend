@@ -123,9 +123,9 @@
         </v-col>
       </v-row>
     </v-card>
-    <!-- <div class="text-body-2 px-2 mb-2" v-if="!isDetail">
-      Total Data: {{ total }}
-    </div> -->
+    <div class="text-body-2 px-2 mb-2" v-if="!isDetail">
+      Total Data: {{ kendaraanTotal }}
+    </div>
 
     <v-data-table
       v-if="!isDetail"
@@ -182,6 +182,7 @@ export default {
       debouncedFetchLeasing: debounce(this.fetchLeasing, 300),
       isDetail: false,
       selectedLeasing: null,
+      kendaraanTotal: 0,
       selectedCabang: null,
       selectedDownloadCabang: null,
       selectedUploadCabang: null,
@@ -289,6 +290,7 @@ export default {
         })
         .then((response) => {
           this.items = response.data.data;
+          this.kendaraanTotal = response.data.data.length
           this.totalPages = Math.ceil(response.data.data.total / this.limit);
         })
         .catch((error) => {
