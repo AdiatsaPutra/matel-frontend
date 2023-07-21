@@ -141,11 +141,29 @@
         <v-btn color="primary" height="27px" dark @click="viewDetail(item.id)">
           Detail
         </v-btn>
-        <!-- <v-btn color="red" height="27px" dark @click="deleteItem(item.id)">
+        <v-btn color="red" height="27px" dark @click="showDeleteKendaraanDialog(item.id)">
           Hapus
-        </v-btn> -->
+        </v-btn>
       </template>
     </v-data-table>
+
+    <v-dialog v-model="showDeleteDialog" max-width="500">
+    <v-card>
+      <div class="pt-5"></div>
+      <div class="text-medium px-5">
+        Anda yakin akan menghapus data ini?
+      </div>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" height="27px" dark @click="showDeleteDialog = false">
+          Batal
+        </v-btn>
+        <v-btn color="red" height="27px" dark @click="deleteKendaraan">
+          Hapus
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
   </div>
 </template>
 
@@ -187,6 +205,8 @@ export default {
       selectedDownloadCabang: null,
       selectedUploadCabang: null,
       showModal: false,
+      showDeleteDialog: false,
+      itemToDelete: null,
       showUploadModal: false,
       isLoading: false,
       success: false,
@@ -322,7 +342,29 @@ export default {
       this.fetchLeasing();
     },
     editItem(itemId) {},
-    deleteItem(itemId) {},
+    showDeleteKendaraanDialog(itemId) {
+      this.$store.dispatch("updateString", "");
+      this.itemToDelete = itemId;
+      this.showDeleteDialog = true;
+    },
+    deleteKendaraan() {
+      this.loading = true;
+      this.$axios
+      .delete(`delete-kendaraan/${this.itemToDelete}`)
+      .then((response) => {
+          this.fetchLeasing();
+          this.fetchCabang();
+          this.fetchLeasingTotal();
+          this.showDeleteDialog = false;
+          this.$store.dispatch("updateString", "Kendaraan Added");
+          this.$store.dispatch("updateString", "Cabang Added");
+        })
+        .catch((error) => {
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     showDownloadModal() {
       this.showModal = !this.showModal;
       this.selectedDownloadCabang = null;
