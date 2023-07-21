@@ -161,11 +161,11 @@
             Detail
           </div>
         </v-btn>
-        <!-- <v-btn color="red" height="27px" dark @click="deleteItem(item.id)">
+        <v-btn color="red" height="27px" dark @click="showDeleteKendaraanDialog(item.id)">
           <div class="text-caption">
             Hapus
           </div>
-        </v-btn> -->
+        </v-btn>
       </template>
       <template v-slot:footer>
           <v-pagination
@@ -254,6 +254,24 @@
         <div class="py-2"></div>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="showDeleteDialog" max-width="500">
+    <v-card>
+      <div class="pt-5"></div>
+      <div class="text-medium px-5">
+        Anda yakin akan menghapus data ini?
+      </div>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" height="27px" dark @click="showDeleteDialog = false">
+          Batal
+        </v-btn>
+        <v-btn color="red" height="27px" dark @click="deleteKendaraan">
+          Hapus
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
   </div>
 </template>
 
@@ -281,6 +299,8 @@ export default {
       showModal: false,
       showUploadModal: false, 
       isLoading: false,
+      showDeleteDialog: false,
+      itemToDelete: null,
       success: false,
       isError: false,
       error: null,
@@ -306,11 +326,19 @@ export default {
   mounted() {
     this.fetchLeasingTotal();
     this.fetchLeasing();
+    this.$store.watch(
+      (state) => state.myString,
+      (newString) => {
+        if (newString === "Kendaraan Deleted") {
+          this.fetchLeasing();
+          this.fetchLeasingTotal();
+        } 
+      }
+    );
   },
   methods: {
     handlePageChange(page) {
     this.currentPage = page;
-
     this.fetchLeasing();
   },
     fetchLeasingTotal() {
@@ -423,6 +451,27 @@ export default {
         .delete("delete-all-kendaraan")
         .then((response) => {
           this.uploadFile()
+        })
+        .catch((error) => {
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    showDeleteKendaraanDialog(itemId) {
+      this.$store.dispatch("updateString", "");
+      this.itemToDelete = itemId;
+      this.showDeleteDialog = true;
+    },
+    deleteKendaraan() {
+      this.loading = true;
+      this.$axios
+      .delete(`delete-kendaraan/${this.itemToDelete}`)
+      .then((response) => {
+          this.showDeleteDialog = false;
+          this.fetchLeasingTotal();
+          this.fetchLeasing();
+          this.$store.dispatch("updateString", "Kendaraan Deleted");
         })
         .catch((error) => {
         })
