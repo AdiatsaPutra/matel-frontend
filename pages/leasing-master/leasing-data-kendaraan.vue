@@ -230,7 +230,6 @@ export default {
       ];
     },
     numberedItems() {
-      const startIndex = (this.currentPage - 1) * this.limit;
       return this.items.map((item, index) => ({
         ...item,
         no: index + 1,

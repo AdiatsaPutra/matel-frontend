@@ -90,7 +90,14 @@
         <div class="text-medium font-weight-bold">
           Data Kendaraan Per Leasing
         </div>
-        <LeasingChart/>
+        <v-data-table
+          :headers="headers"
+          :items="homeTotal.leasing_chart"
+          hide-default-footer
+          disable-pagination
+        >
+        </v-data-table>
+        <!-- <LeasingChart/> -->
       </v-card>
     </v-col>
   </v-row>
@@ -102,6 +109,14 @@ import LeasingChart from '../components/Chart/LeasingChart.vue';
 export default {
     name: "IndexPage",
     middleware: "auth",
+    computed:{
+      headers() {
+        return [
+          { text: "Nama Leasing", value: "leasing_name" },
+          { text: "Jumlah Kendaraan", value: "count" },
+        ];
+      },
+    },
     data() {
         return {
             loading: false,
@@ -110,6 +125,7 @@ export default {
                 expired_members: 0,
                 premium_members: 0,
                 trial_members: 0,
+                leasing_chart: [],
             },
         };
     },

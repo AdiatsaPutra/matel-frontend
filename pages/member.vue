@@ -11,8 +11,22 @@
         ></v-text-field>
       </v-col>
     </v-row>
-
-    <v-data-table :headers="headers" :items="users">
+    <v-data-table :headers="headers" :items="numberedItems">
+      <template v-slot:item.subscription_month="{ item }">
+        <p class="mt-4 mr-5 text-center">
+          {{ getSubscriptionMonthText(item.subscription_month) }}
+        </p>
+      </template>
+      <template v-slot:item.start_subscrition="{ item }">
+        <p class="mt-4 mr-5 text-center">
+          {{ item.start_subscrition === "" ? "-" : item.start_subscrition }}
+        </p>
+      </template>
+      <template v-slot:item.end_subscription="{ item }">
+        <p class="mt-4 mr-5 text-center">
+          {{ item.end_subscription === "" ? "-" : item.end_subscription }}
+        </p>
+      </template>
       <template v-slot:item.status="{ item }">
         {{ getStatusText(item.status, item.end_subscription) }}
       </template>
@@ -122,11 +136,11 @@ export default {
       },
       editUserSubscription: 1,
       headers: [
-        { text: "ID", value: "id" },
+        { text: "No", value: "no" },
         { text: "Nama", value: "username" },
         { text: "Email", value: "email" },
         { text: "Status", value: "status" },
-        { text: "Jumlah Berlangganan", value: "subscription_month" },
+        { text: "Waktu Berlangganan", value: "subscription_month" },
         { text: "Mulai Berlangganan", value: "start_subscrition" },
         { text: "Akhir Berlangganan", value: "end_subscription" },
         { text: "Actions", value: "actions", sortable: false },
@@ -139,7 +153,14 @@ export default {
       ],
     };
   },
-  computed: {},
+  computed: {
+    numberedItems() {
+      return this.users.map((item, index) => ({
+        ...item,
+        no: index + 1,
+      }));
+    },
+  },
   methods: {
     fetchUser() {
       this.$axios
@@ -194,9 +215,7 @@ export default {
     },
     getStatusText(status, end) {
       const currentDate = new Date();
-
       const subscriptionEndDate = new Date(end);
-
       if (subscriptionEndDate > currentDate) {
         if (status === 0) {
           return "Trial"
@@ -207,6 +226,13 @@ export default {
         }
       } else {
         return "Expired"
+      }
+    },
+    getSubscriptionMonthText(subscriptionMonth) {
+      if (subscriptionMonth === 0) {
+        return "-"
+      } else {
+        return `${subscriptionMonth} Bulan`
       }
     },
     saveUserChanges() {
