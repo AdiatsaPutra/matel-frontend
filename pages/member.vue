@@ -189,6 +189,7 @@ export default {
     },
     openEditModal(user) {
       this.selectedUser = user;
+      this.editUserSubscription = user.subscription_month.toString()
       this.isEditModalOpen = true;
     },
     closeEditModal() {
@@ -240,7 +241,6 @@ export default {
         user_id: this.selectedUser.id,
         subscription_month: this.editUserSubscription,
       };
-
       this.$axios
         .post('update-member', params)
         .then((response) => {
