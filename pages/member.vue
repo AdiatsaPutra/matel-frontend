@@ -35,7 +35,7 @@
           Detail
         </v-btn>
         <v-btn color="primary" height="30px" outlined dark @click="openEditModal(item)">
-          Ubah Subscription
+          Ubah
         </v-btn>
         <v-btn color="red" height="30px" dark @click="openConfirmModal(item)"> Hapus </v-btn>
       </template>

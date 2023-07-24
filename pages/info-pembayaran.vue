@@ -9,6 +9,7 @@
       prepend-inner-icon="mdi-magnify"
       @input="fetchBanks"
     ></v-text-field>
+    {{ banks }}
     <v-container fluid class="py-0">
       <v-card>
         <v-card-title>
