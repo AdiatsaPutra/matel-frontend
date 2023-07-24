@@ -19,12 +19,12 @@
       </template>
       <template v-slot:item.start_subscrition="{ item }">
         <p class="mt-4 mr-5 text-center">
-          {{ item.start_subscrition === "" ? "-" : item.start_subscrition }}
+          {{ item.start_subscrition === "" ? "-" : formatDate(item.start_subscrition) }}
         </p>
       </template>
       <template v-slot:item.end_subscription="{ item }">
         <p class="mt-4 mr-5 text-center">
-          {{ item.end_subscription === "" ? "-" : item.end_subscription }}
+          {{ item.end_subscription === "" ? "-" : formatDate(item.end_subscription) }}
         </p>
       </template>
       <template v-slot:item.status="{ item }">
@@ -46,26 +46,26 @@
         <v-card-title>
           <span class="headline">Detail Pengguna</span>
         </v-card-title>
-        <v-card-text>
-          <v-text-field
-            v-model="selectedUser.username"
-            label="Username"
-            readonly
-            outlined
-          ></v-text-field>
-          <v-text-field
-            v-model="selectedUser.email"
-            label="Email"
-            readonly
-            outlined
-          ></v-text-field>
-          <v-text-field
-            :value="getStatusText(selectedUser.status, selectedUser.end_subscription)"
-            label="Status"
-            readonly
-            outlined
-          ></v-text-field>
-        </v-card-text>
+         <div class="px-6">
+            <div>Nama Pengguna</div>
+            <div class="font-weight-bold">{{ selectedUser.username }}</div>
+            <div class="pb-5"></div>
+            <div>Email Pengguna</div>
+            <div class="font-weight-bold">{{ selectedUser.email }}</div>
+            <div class="pb-5"></div>
+            <div>Status</div>
+            <div class="font-weight-bold">{{ getStatusText(selectedUser.status, selectedUser.end_subscription) }}</div>
+            <div class="pb-5"></div>
+            <div>Waktu Berlangganan</div>
+            <div class="font-weight-bold">{{ getSubscriptionMonthText(selectedUser.subscription_month) }}</div>
+            <div class="pb-5"></div>
+            <div>Awal Berlangganan</div>
+            <div class="font-weight-bold">{{ formatDate(selectedUser.start_subscrition) }}</div>
+            <div class="pb-5"></div>
+            <div>Akhir Berlangganan</div>
+            <div class="font-weight-bold">{{ formatDate(selectedUser.end_subscription) }}</div>
+            <div class="pb-5"></div>
+         </div>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" dark @click="closeDetailModal">Tutup</v-btn>
@@ -251,6 +251,23 @@ export default {
           this.closeEditModal();
           this.fetchUser()
         });
+    },
+    formatDate(date) {
+      if (!(date instanceof Date)) {
+        date = new Date(date);
+      }
+
+      const monthNames = [
+        'Januati', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'December'
+      ];
+
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = monthNames[date.getMonth()];
+      const year = date.getFullYear();
+
+      const formattedDate = `${day} ${month} ${year}`;
+      return formattedDate;
     },
   },
   mounted() {

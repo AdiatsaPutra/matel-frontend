@@ -47,7 +47,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
-  
+
       <v-data-table :headers="headers" :items="filteredKabupaten">
         <template v-slot:item.actions="{ item }">
           <v-btn color="primary" height="30px" dark @click="openDetailModal(item)">
@@ -171,7 +171,7 @@
                 .includes(this.searchKabupaten.toLowerCase())
           );
         }
-        return [];
+        return this.kabupaten
       },
       filteredKecamatan() {
         if (this.selectedKabupaten) {
@@ -183,7 +183,7 @@
                 .includes(this.searchKecamatan.toLowerCase())
           );
         }
-        return [];
+        return this.kecamatan;
       },
     },
     methods: {
@@ -202,36 +202,28 @@
           });
       },
       fetchKabupaten() {
-        if (this.selectedProvince) {
-          this.$axios
-            .get(`kabupaten/${this.selectedProvince}`)
-            .then((response) => {
-              if (response.data.data === null) {
-                this.kabupaten = [];
-              } else {
-                this.kabupaten = response.data.data;
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        }
+        this.$axios
+          .get(`kabupaten/${this.selectedProvince}`)
+          .then((response) => {
+            this.kabupaten = response.data.data;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       },
       fetchKecamatan() {
-        if (this.selectedKabupaten) {
-          this.$axios
-            .get(`kecamatan/${this.selectedKabupaten}`)
-            .then((response) => {
-              if (response.data.data === null) {
-                this.kecamatan = [];
-              } else {
-                this.kecamatan = response.data.data;
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        }
+        this.$axios
+          .get(`kecamatan/${this.selectedKabupaten}`)
+          .then((response) => {
+            if (response.data.data === null) {
+              this.kecamatan = [];
+            } else {
+              this.kecamatan = response.data.data;
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       },
       openDetailModal(data) {
         this.selectedData = data;
