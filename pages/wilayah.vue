@@ -1,9 +1,9 @@
 <template>
     <v-container fluid>
 
-      <v-btn color="green" height="30px" dark @click="openCreateModal('province')">Tambah Provinsi</v-btn>
+      <!-- <v-btn color="green" height="30px" dark @click="openCreateModal('province')">Tambah Provinsi</v-btn>
     <v-btn color="green" height="30px" dark @click="openCreateModal('kabupaten')">Tambah Kabupaten</v-btn>
-    <v-btn color="green" height="30px" dark @click="openCreateModal('kecamatan')">Tambah Kecamatan</v-btn>
+    <v-btn color="green" height="30px" dark @click="openCreateModal('kecamatan')">Tambah Kecamatan</v-btn> -->
       
       <div class="text-medium font-weight-bold mb-2">Data Provinsi</div>
       <v-row>
