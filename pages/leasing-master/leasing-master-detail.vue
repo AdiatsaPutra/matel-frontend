@@ -99,6 +99,12 @@
               outlined
               label="Nama Cabang"
             ></v-text-field>
+            <v-text-field
+              v-model="newLeasing.no_hp"
+              :rules="nameRules"
+              outlined
+              label="No HP"
+            ></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -127,6 +133,12 @@
           :rules="nameRules"
           outlined
           label="Nama Cabang"
+        ></v-text-field>
+        <v-text-field
+          v-model="editLeasing.no_hp"
+          :rules="nameRules"
+          outlined
+          label="No HP"
         ></v-text-field>
       </v-form>
     </v-card-text>
@@ -258,6 +270,7 @@ export default {
       cabangWithTotal: [],
       headers: [
         { text: "Nama Cabang", value: "nama_cabang" },
+        { text: "No HP", value: "no_hp" },
         { text: "Tanggal Upload", value: "latest_created_at" },
         { text: "Total kendaraan", value: "kendaraan_total" },
         { text: "Actions", value: "actions", sortable: false },
@@ -393,11 +406,13 @@ export default {
     }
   },
   deleteCabang() {
+    this.$store.dispatch("updateString", "");
     const { id } = this.editLeasing;
     this.$axios
       .delete(`cabang/${id}`)
       .then((response) => {
         this.fetchData();
+        this.$store.dispatch("updateString", "Cabang Added");
         this.deleteDialog = false;
       })
       .catch((error) => {
