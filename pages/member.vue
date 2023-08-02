@@ -11,7 +11,10 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-data-table :headers="headers" :items="numberedItems">
+    <v-data-table :headers="headers" 
+    :items="numberedItems" 
+    hide-default-footer
+      disable-pagination>
       <template v-slot:item.subscription_month="{ item }">
         <p class="mt-4 mr-5 text-center">
           {{ getSubscriptionMonthText(item.subscription_month) }}
