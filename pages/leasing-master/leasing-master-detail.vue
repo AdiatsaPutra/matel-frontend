@@ -300,12 +300,12 @@ export default {
       newLeasing: {
         leasing_id: this.leasingId,
         nama_cabang: "",
+        no_hp: "",
       },
       editLeasing: {
         id: "",
         nama_cabang: "",
-        nama_pic: "",
-        no_hp_pic: "",
+        no_hp: "",
       },
       nameRules: [(v) => !!v || "Wajib diisi"],
     };
@@ -355,6 +355,7 @@ export default {
           }
         })
         .then((response) => {
+          console.log(response.data.data)
           if(response.data.data != null){
             this.cabangWithTotal = response.data.data;
           }
@@ -377,6 +378,7 @@ export default {
             this.newLeasing = {
               leasing_id: this.leasingId,
               nama_cabang: "",
+              no_hp: "",
             };
             this.$store.dispatch("updateString", "Cabang Added");
             this.createDialog = false;
@@ -397,6 +399,7 @@ export default {
           this.editLeasing = {
             id: "",
             nama_cabang: "",
+            no_hp: "",
           };
           this.editDialog = false;
         })
