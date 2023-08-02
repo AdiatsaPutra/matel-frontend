@@ -230,7 +230,7 @@ export default {
           params: {
             search: this.search,
             page: this.options.page,
-            limit: this.limit,
+            limit: -1,
           },
         })
         .then((response) => {
