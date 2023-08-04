@@ -149,10 +149,12 @@ export default {
         { text: "Actions", value: "actions", sortable: false },
       ],
       subscriptionOptions: [
-        { text: "1 Bulan", value: "1" },
-        { text: "3 Bulan", value: "3" },
-        { text: "6 Bulan", value: "6" },
-        { text: "12 Bulan", value: "12" },
+        { text: "1 Hari", value: "1" },
+        { text: "1 Minggu", value: "7" },
+        { text: "1 Bulan", value: "30" },
+        { text: "3 Bulan", value: "90" },
+        { text: "6 Bulan", value: "180" },
+        { text: "12 Bulan", value: "360" },
       ],
     };
   },
@@ -233,10 +235,20 @@ export default {
       }
     },
     getSubscriptionMonthText(subscriptionMonth) {
-      if (subscriptionMonth === 0) {
-        return "-"
+      if (subscriptionMonth === 1) {
+        return '1 hari';
+      } else if (subscriptionMonth === 7) {
+        return '1 minggu';
+      } else if (subscriptionMonth === 30) {
+        return '1 bulan';
+      } else if (subscriptionMonth > 30 && subscriptionMonth % 30 === 0) {
+        const months = subscriptionMonth / 30;
+        return `${months} bulan`;
+      } else if (subscriptionMonth > 7 && subscriptionMonth % 7 === 0) {
+        const weeks = subscriptionMonth / 7;
+        return `${weeks} minggu`;
       } else {
-        return `${subscriptionMonth} Bulan`
+        return `${subscriptionMonth} hari`;
       }
     },
     saveUserChanges() {
@@ -261,7 +273,7 @@ export default {
       }
 
       const monthNames = [
-        'Januati', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
         'Juli', 'Agustus', 'September', 'Oktober', 'November', 'December'
       ];
 
