@@ -599,7 +599,6 @@ export default {
         if (newString === "Cabang Added") {
           this.fetchData();
           this.fetchDataWithTotal();
-          this.$store.dispatch("updateString", "Kendaraan Added");
         } else if (newString === "Kendaraan Added") {
           this.fetchData();
           this.fetchDataWithTotal();
