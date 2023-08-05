@@ -368,11 +368,11 @@ export default {
         });
     },
     createCabang() {
+      this.$store.dispatch("updateString", "");
       if (this.$refs.createForm.validate()) {
         this.$axios
         .post("cabang", this.newLeasing)
         .then((response) => {
-          this.$store.dispatch("updateString", "");
           this.$refs.createForm.reset();
           this.fetchData();
             this.newLeasing = {
@@ -599,6 +599,7 @@ export default {
         if (newString === "Cabang Added") {
           this.fetchData();
           this.fetchDataWithTotal();
+          this.$store.dispatch("updateString", "Kendaraan Added");
         } else if (newString === "Kendaraan Added") {
           this.fetchData();
           this.fetchDataWithTotal();
