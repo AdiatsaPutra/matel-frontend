@@ -414,7 +414,6 @@ export default {
     this.$axios
       .delete(`cabang/${id}`)
       .then((response) => {
-        this.fetchData();
         this.$store.dispatch("updateString", "Cabang Added");
         this.deleteDialog = false;
       })

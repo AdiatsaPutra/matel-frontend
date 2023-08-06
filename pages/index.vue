@@ -85,7 +85,11 @@
     </v-col>
   </v-row>
   <v-row>
-    <v-col cols="12" lg="6">
+    <div v-if="homeTotal.leasing_chart === null">
+    </div>
+    <v-col 
+    v-else
+    cols="12" lg="6">
       <v-card class="mx-3 ml-3 pa-10">
         <div class="text-medium font-weight-bold">
           Data Kendaraan Per Leasing
