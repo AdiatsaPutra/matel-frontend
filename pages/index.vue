@@ -96,7 +96,7 @@
         </div>
         <v-data-table
           :headers="headers"
-          :items="homeTotal.leasing_chart"
+          :items="leasing_chart"
           hide-default-footer
           disable-pagination
         >
@@ -124,17 +124,18 @@ export default {
     data() {
         return {
             loading: false,
+            leasing_chart: [],
             homeTotal: {
                 leasing: 0,
                 expired_members: 0,
                 premium_members: 0,
                 trial_members: 0,
-                leasing_chart: [],
             },
         };
     },
     mounted() {
         this.fetchData();
+        this.fetchKendaraanPerCabang();
     },
     methods: {
         fetchData() {
@@ -144,6 +145,21 @@ export default {
                 .then((response) => {
                 this.homeTotal = response.data.data;
                 this.loading = false;
+            })
+                .catch((error) => {
+                this.loading = false;
+            })
+                .finally(() => {
+                this.loading = false;
+            });
+        },
+        fetchKendaraanPerCabang() {
+            this.loading = true;
+            this.$axios
+                .get("kendaraan-per-cabang")
+                .then((response) => {
+                  this.leasing_chart = response.data.data;
+                  this.loading = false;
             })
                 .catch((error) => {
                 this.loading = false;
