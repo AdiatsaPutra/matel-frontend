@@ -130,9 +130,11 @@
     <v-data-table
       v-if="!isDetail"
       :headers="headers"
-      :items="numberedItems"
+      :items="items"
       :search="search"
       :loading="loading"
+      hide-default-footer
+      disable-pagination
     >
       <template v-slot:item.CreatedAt="{ item }">
         {{ new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "long", year: "numeric" }).format(items.CreatedAt) }}
@@ -145,6 +147,18 @@
           Hapus
         </v-btn>
       </template>
+      <template v-slot:footer>
+          <v-pagination
+          class="py-5"
+          v-model="currentPage"
+          :length="Math.ceil(kendaraanTotal / perPage)"
+          prev-icon="mdi-chevron-left"
+          next-icon="mdi-chevron-right"
+          :total-visible="12"
+          :disabled="loading"
+          @input="handlePageChange"
+        ></v-pagination>
+        </template>
     </v-data-table>
 
     <v-dialog v-model="showDeleteDialog" max-width="500">
@@ -196,7 +210,9 @@ export default {
       total: 10,
       search: "",
       currentPage: 1,
+      perPage: 20,
       limit: -1,
+      kendaranLimit: 20,
       debouncedFetchLeasing: debounce(this.fetchLeasing, 300),
       isDetail: false,
       selectedLeasing: null,
@@ -252,6 +268,10 @@ export default {
     this.fetchLeasingTotal();
   },
   methods: {
+    handlePageChange(page) {
+    this.currentPage = page;
+    this.fetchLeasing();
+  },
     fetchCabang() {
       this.loading = true;
       this.$axios
@@ -302,14 +322,15 @@ export default {
           params: {
             leasing: this.leasingName,
             search: this.search,
-            page: this.options.page,
-            limit: this.limit,
+            page: this.currentPage,
+            limit: this.perPage,
             cabang: this.cabangName,
           },
         })
         .then((response) => {
-          this.items = response.data.data;
-          this.kendaraanTotal = response.data.data.length
+          this.items = response.data.data.kendaraan;
+          console.log(response.data.data)
+          this.kendaraanTotal = response.data.data.total
           this.totalPages = Math.ceil(response.data.data.total / this.limit);
         })
         .catch((error) => {

@@ -368,7 +368,7 @@ export default {
         })
         .then((response) => {
           this.items = [];
-          this.items = response.data.data;
+          this.items = response.data.data.kendaraan;
         })
         .catch((error) => {
         })
