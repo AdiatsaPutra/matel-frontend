@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-navigation-drawer v-model="drawer" color="primary" dark app>
-      <div class="text-h4 font-weight-bold white--text py-5 px-6">Matel</div>
+      <div class="text-h4 font-weight-bold white--text py-5 px-6">Taurus</div>
       <v-list color="transparent" density="compact" nav>
         <v-list-item
           v-for="(item, i) in dashboardItem"
