@@ -236,8 +236,7 @@ export default {
   computed: {
     headers() {
       return [
-        { text: "No", value: "no" },
-        { text: "Leasing", value: "leasing" },
+        { text: "Nama Leasing", value: "leasing" },
         { text: "Cabang", value: "cabang" },
         { text: "Nama Debitur", value: "nama_debitur" },
         { text: "No Polisi", value: "nomor_polisi" },
