@@ -192,7 +192,7 @@ export default {
     return {
       items: [],
       headers: [
-        { text: "Nama Cabang", value: "nama_leasing" },
+        { text: "Nama Leasing", value: "nama_leasing" },
         { text: "Nama PIC", value: "nama_pic" },
         { text: "Nomor HP PIC", value: "no_hp_pic" },
         { text: "Actions", value: "actions", sortable: false },
