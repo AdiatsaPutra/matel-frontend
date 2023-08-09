@@ -463,7 +463,9 @@ export default {
         const cabangFiltered = this.cabang.filter(
           (item) => item.id === this.selectedUploadCabang
           );
+          const cabangId = cabangFiltered[0].id;
           const cabangName = cabangFiltered[0].nama_cabang;
+          this.formData.append("cabang_id", cabangId);
           this.formData.append("cabang_name", cabangName);
           this.$axios
           .post("upload-leasing-per-cabang", this.formData, {
@@ -555,12 +557,14 @@ export default {
             const cabangFiltered = this.cabang.filter(
               (item) => item.nama_cabang === this.selectedGantikanDataCabang
             );
+            const cabangId = cabangFiltered[0].id;
             const cabangName = cabangFiltered[0].nama_cabang;
+            this.formData.append("cabang_id", cabangId);
             this.formData.append("cabang_name", cabangName);
             this.success = false;
             this.isLoading = true;
             this.$axios
-              .post("upload-leasing", this.formData, {
+              .post("upload-leasing-per-cabang", this.formData, {
                 headers: {
                   "Content-Type": "multipart/form-data",
                 },
