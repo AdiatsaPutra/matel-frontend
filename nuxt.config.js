@@ -2,8 +2,8 @@ import colors from "vuetify/es5/util/colors";
 
 export default {
   head: {
-    titleTemplate: "%s - motor",
-    title: "motor",
+    titleTemplate: "%s",
+    title: "taurus",
     htmlAttrs: {
       lang: "en",
     },

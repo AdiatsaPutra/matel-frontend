@@ -93,7 +93,6 @@ export default {
           // }
         }
       } catch (error) {
-        console.log(error);
         this.loading = false;
         this.isError = true;
         this.errorMessage = error;
