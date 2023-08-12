@@ -359,16 +359,17 @@ export default {
     fetchLeasing() {
       this.loading = true;
       this.$axios
-        .get("kendaraan", {
-          params: {
-            search: this.search,
-            page: this.currentPage,
-            limit: this.perPage,
-      },
-        })
-        .then((response) => {
-          this.items = [];
-          this.items = response.data.data.kendaraan;
+      .get("kendaraan", {
+        params: {
+          search: this.search,
+          page: this.currentPage,
+          limit: this.perPage,
+        },
+      })
+      .then((response) => {
+        this.items = [];
+        this.items = response.data.data.kendaraan;
+        this.loading = false;
         })
         .catch((error) => {
         })

@@ -269,7 +269,7 @@ export default {
       cabang: [],
       cabangWithTotal: [],
       headers: [
-        { text: "Nama Cabang", value: "nama_cabang" },
+        { text: "Nama Data", value: "nama_cabang" },
         { text: "No HP", value: "no_hp" },
         { text: "Tanggal Upload", value: "latest_created_at" },
         { text: "Total kendaraan", value: "kendaraan_total" },
