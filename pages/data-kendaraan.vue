@@ -22,7 +22,7 @@
           solo
           dense
           prepend-inner-icon="mdi-magnify"
-          @input="fetchLeasing"
+          @input="debouncedFetchLeasing"
         ></v-text-field>
       </v-row>
     </div>
@@ -356,6 +356,27 @@ export default {
           this.loading = false;
         });
     },
+    searchLeasing() {
+      this.loading = true;
+      this.$axios
+      .get("kendaraan", {
+        params: {
+          search: this.search,
+          page: this.currentPage,
+          limit: this.perPage,
+        },
+      })
+      .then((response) => {
+        if(this.search === ''){
+          this.items = response.data.data.kendaraan;
+        }else{
+          this.items = response.data.data;
+        }
+        this.loading = false;
+      })
+      .catch((error) => {
+      })
+    },
     fetchLeasing() {
       this.loading = true;
       this.$axios
@@ -367,8 +388,11 @@ export default {
         },
       })
       .then((response) => {
-        this.items = [];
-        this.items = response.data.data.kendaraan;
+        if(this.search === ''){
+          this.items = response.data.data.kendaraan;
+        }else{
+          this.items = response.data.data;
+        }
         this.loading = false;
         })
         .catch((error) => {
