@@ -13,6 +13,10 @@
         :headers="headers"
         :items="items"
         :search="search"
+        :footer-props="{
+          'items-per-page-options': [10, 20, 50, 100, -1]
+        }"
+        :items-per-page="20"
         :loading="loading"
       >
         <template v-slot:item.actions="{ item }">
