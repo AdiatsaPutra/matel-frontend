@@ -13,8 +13,8 @@
     </v-row>
     <v-data-table :headers="headers" 
     :items="numberedItems" 
-    hide-default-footer
-      disable-pagination>
+    :search="search"
+   >
       <template v-slot:item.subscription_month="{ item }">
         <p class="mt-4 mr-5 text-center">
           {{ getSubscriptionMonthText(item.subscription_month) }}
@@ -149,6 +149,7 @@ export default {
         { text: "Actions", value: "actions", sortable: false },
       ],
       subscriptionOptions: [
+        { text: "0 Hari", value: "0" },
         { text: "1 Hari", value: "1" },
         { text: "1 Minggu", value: "7" },
         { text: "1 Bulan", value: "30" },
