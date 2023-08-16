@@ -141,7 +141,7 @@ export default {
       headers: [
         { text: "No", value: "no" },
         { text: "Nama", value: "username" },
-        { text: "Email", value: "email" },
+        { text: "No HP", value: "phone" },
         { text: "Status", value: "status" },
         { text: "Waktu Berlangganan", value: "subscription_month" },
         { text: "Mulai Berlangganan", value: "start_subscrition" },
