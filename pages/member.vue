@@ -53,8 +53,8 @@
             <div>Nama Pengguna</div>
             <div class="font-weight-bold">{{ selectedUser.username }}</div>
             <div class="pb-5"></div>
-            <div>Email Pengguna</div>
-            <div class="font-weight-bold">{{ selectedUser.email }}</div>
+            <div>No HP</div>
+            <div class="font-weight-bold">{{ selectedUser.phone }}</div>
             <div class="pb-5"></div>
             <div>Status</div>
             <div class="font-weight-bold">{{ getStatusText(selectedUser.status, selectedUser.end_subscription) }}</div>
@@ -283,6 +283,7 @@ export default {
       const year = date.getFullYear();
 
       const formattedDate = `${day} ${month} ${year}`;
+      
       return formattedDate;
     },
   },
