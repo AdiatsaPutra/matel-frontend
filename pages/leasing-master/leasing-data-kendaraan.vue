@@ -29,7 +29,7 @@
             </v-col>
             <v-col>
               <v-text-field
-                v-model="selectedLeasing.cabang"
+                v-model="selectedLeasing.cabangData"
                 label="Cabang"
                 readonly
                 outlined
@@ -237,7 +237,7 @@ export default {
     headers() {
       return [
         { text: "Nama Leasing", value: "leasing" },
-        { text: "Cabang", value: "cabang" },
+        { text: "Cabang", value: "cabangData" },
         { text: "Nama Debitur", value: "nama_debitur" },
         { text: "No Polisi", value: "nomor_polisi" },
         { text: "Tanggal Upload", value: "CreatedAt" },
