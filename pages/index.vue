@@ -72,7 +72,7 @@
         </div>
       </v-card>
     </v-col>
-    <v-col cols="12" lg="4" xl="3">
+    <!-- <v-col cols="12" lg="4" xl="3">
       <v-card class="ma-5 pa-5">
         <div>
           <p class="text-h6 ma-0 primary--text">KONFIRMASI PEMBAYARAN</p>
@@ -82,7 +82,7 @@
           </h1>
         </div>
       </v-card>
-    </v-col>
+    </v-col> -->
   </v-row>
   <v-row>
     <div v-if="homeTotal.leasing_chart === null">
