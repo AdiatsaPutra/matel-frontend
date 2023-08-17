@@ -91,7 +91,7 @@
             dark
             @click="confirmDelete(item, false)"
           >
-            <div class="text-caption">Hapus  Data Kendaraan</div>
+            <div class="text-caption">Hapus Data Kendaraan</div>
           </v-btn>
         </template>
       </v-data-table>
