@@ -76,11 +76,20 @@
             <div class="text-caption">Edit</div>
           </v-btn>
           <v-btn
+            color="primary"
+            height="27px"
+            min-width="60px"
+            dark
+            @click="confirmDelete(item, true)"
+          >
+            <div class="text-caption">Hapus Data Kendaraan</div>
+          </v-btn>
+          <v-btn
             color="red"
             height="27px"
             min-width="60px"
             dark
-            @click="confirmDelete(item)"
+            @click="confirmDelete(item, false)"
           >
             <div class="text-caption">Hapus</div>
           </v-btn>
@@ -283,6 +292,7 @@ export default {
       loading: false,
       success: false,
       createDialog: false,
+      isDeleteKendaraan: false,
       showUploadModal: false,
       selectedGantikanDataCabang: null,
       editDialog: false,
@@ -411,15 +421,32 @@ export default {
   deleteCabang() {
     this.$store.dispatch("updateString", "");
     const { id } = this.editLeasing;
-    this.$axios
-      .delete(`cabang/${id}`)
-      .then((response) => {
-        this.$store.dispatch("updateString", "Cabang Added");
-        this.deleteDialog = false;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    if (this.isDeleteKendaraan === true){
+      this.$axios
+        .delete(`cabang/${id}`, {
+          params: {
+            "query": "delete-kendaraan"
+          }
+        })
+        .then((response) => {
+          this.$store.dispatch("updateString", "Cabang Added");
+          this.deleteDialog = false;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      }else{
+      this.$axios
+        .delete(`cabang/${id}`)
+        .then((response) => {
+          this.$store.dispatch("updateString", "Cabang Added");
+          this.deleteDialog = false;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+    }
     },
     handleFileChange() {
       this.formData = new FormData();
@@ -513,7 +540,8 @@ export default {
     cancelDelete() {
       this.deleteDialog = false;
     },
-    confirmDelete(item) {
+    confirmDelete(item, deleteKendaraan) {
+      this.isDeleteKendaraan = deleteKendaraan
       this.editLeasing = { ...item };
       this.deleteDialog = true;
     },
