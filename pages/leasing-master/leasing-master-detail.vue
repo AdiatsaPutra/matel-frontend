@@ -425,7 +425,7 @@ export default {
       this.$axios
         .delete(`cabang/${id}`, {
           params: {
-            "query": "delete-kendaraan"
+            "query": "delete-cabang"
           }
         })
         .then((response) => {
