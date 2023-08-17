@@ -76,23 +76,23 @@
             <div class="text-caption">Edit</div>
           </v-btn>
           <v-btn
-            color="primary"
-            height="27px"
-            min-width="60px"
-            dark
-            @click="confirmDelete(item, true)"
+          color="red"
+          height="27px"
+          min-width="60px"
+          dark
+          @click="confirmDelete(item, true)"
           >
-            <div class="text-caption">Hapus Data Kendaraan</div>
-          </v-btn>
-          <v-btn
-            color="red"
-            height="27px"
-            min-width="60px"
-            dark
-            @click="confirmDelete(item, false)"
-          >
-            <div class="text-caption">Hapus</div>
-          </v-btn>
+          <div class="text-caption">Hapus</div>
+        </v-btn>
+        <v-btn
+          color="primary"
+          height="27px"
+          min-width="60px"
+          dark
+          @click="confirmDelete(item, false)"
+        >
+          <div class="text-caption">Hapus Data Kendaraan</div>
+        </v-btn>
         </template>
       </v-data-table>
     </div>
@@ -418,10 +418,10 @@ export default {
         });
     }
   },
-  deleteCabang() {
+  deleteCabang(deleteCabang) {
     this.$store.dispatch("updateString", "");
     const { id } = this.editLeasing;
-    if (this.isDeleteKendaraan === true){
+    if (deleteCabang === true){
       this.$axios
         .delete(`cabang/${id}`, {
           params: {
