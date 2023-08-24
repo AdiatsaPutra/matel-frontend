@@ -92,7 +92,7 @@
     cols="12" lg="6">
       <v-card class="mx-3 ml-3 pa-10">
         <div class="text-medium font-weight-bold">
-          Data Kendaraan Per Cabang
+          Data Kendaraan Per Data
         </div>
         <v-data-table
           :headers="headers"
@@ -116,7 +116,7 @@ export default {
     computed:{
       headers() {
         return [
-          { text: "Nama Cabang", value: "leasing_name" },
+          { text: "Nama Data", value: "leasing_name" },
           { text: "Jumlah Kendaraan", value: "count" },
         ];
       },
