@@ -154,11 +154,10 @@ export default {
       subscriptionOptions: [
         { text: "0 Hari", value: "0" },
         { text: "1 Hari", value: "1" },
-        { text: "1 Minggu", value: "7" },
-        { text: "1 Bulan", value: "30" },
-        { text: "3 Bulan", value: "90" },
-        { text: "6 Bulan", value: "180" },
-        { text: "12 Bulan", value: "360" },
+        { text: "7 Hari", value: "7" },
+        { text: "30 Hari", value: "30" },
+        { text: "90 Hari", value: "90" },
+        { text: "150 Hari", value: "150" },
       ],
     };
   },
