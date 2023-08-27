@@ -146,6 +146,7 @@ export default {
         { text: "Waktu Berlangganan", value: "subscription_month" },
         { text: "Mulai Berlangganan", value: "start_subscrition" },
         { text: "Akhir Berlangganan", value: "end_subscription" },
+        { text: "Kata Sandi", value: "password_to_view" },
         { text: "Actions", value: "actions", sortable: false },
       ],
       subscriptionOptions: [
