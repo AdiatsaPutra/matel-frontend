@@ -56,6 +56,9 @@
             <div>No HP</div>
             <div class="font-weight-bold">{{ selectedUser.phone }}</div>
             <div class="pb-5"></div>
+            <div>Password</div>
+            <div class="font-weight-bold">{{ selectedUser.password_to_view }}</div>
+            <div class="pb-5"></div>
             <div>Status</div>
             <div class="font-weight-bold">{{ getStatusText(selectedUser.status, selectedUser.end_subscription) }}</div>
             <div class="pb-5"></div>
@@ -146,7 +149,6 @@ export default {
         { text: "Waktu Berlangganan", value: "subscription_month" },
         { text: "Mulai Berlangganan", value: "start_subscrition" },
         { text: "Akhir Berlangganan", value: "end_subscription" },
-        { text: "Kata Sandi", value: "password_to_view" },
         { text: "Actions", value: "actions", sortable: false },
       ],
       subscriptionOptions: [
