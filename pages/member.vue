@@ -17,7 +17,7 @@
    >
       <template v-slot:item.subscription_month="{ item }">
         <p class="mt-4 mr-5 text-center">
-          {{ getSubscriptionMonthText(item.subscription_month) }}
+          {{ getSubscriptionMonthText(item.status, item.subscription_month) }}
         </p>
       </template>
       <template v-slot:item.start_subscrition="{ item }">
@@ -239,8 +239,12 @@ export default {
         return "Expired"
       }
     },
-    getSubscriptionMonthText(subscriptionMonth) {
-      if (subscriptionMonth === 1) {
+    getSubscriptionMonthText(status, subscriptionMonth) {
+      if(status === 0){
+        return `30 hari`;
+      }
+      else{
+        if (subscriptionMonth === 1) {
         return '1 hari';
       } else if (subscriptionMonth === 7) {
         return '1 minggu';
@@ -255,12 +259,14 @@ export default {
       } else {
         return `${subscriptionMonth} hari`;
       }
+      }
     },
     saveUserChanges() {
       const params = {
         user_id: this.selectedUser.id,
         subscription_month: this.editUserSubscription,
       };
+      console.log(params)
       this.$axios
         .post('update-member', params)
         .then((response) => {
