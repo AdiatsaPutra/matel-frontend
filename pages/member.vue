@@ -225,7 +225,9 @@ export default {
     getStatusText(status, end) {
       const currentDate = new Date();
       const subscriptionEndDate = new Date(end);
-      if (subscriptionEndDate > currentDate) {
+      if(status === 0){
+        return "Trial"
+      } else if (subscriptionEndDate > currentDate) {
         if (status === 0) {
           return "Trial"
         } else if (status === 1) {
