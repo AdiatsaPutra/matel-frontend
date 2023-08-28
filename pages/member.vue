@@ -245,7 +245,8 @@ export default {
         const currentDate = new Date();
         const timeDifference = currentDate - createdAtDate;
         const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        return `${daysDifference} hari`;
+        const sub = 30 - daysDifference
+        return `${sub} hari`;
       } else{
         if (subscriptionMonth === 1) {
         return '1 hari';
