@@ -17,7 +17,7 @@
    >
       <template v-slot:item.subscription_month="{ item }">
         <p class="mt-4 mr-5 text-center">
-          {{ getSubscriptionMonthText(item.status, item.subscription_month) }}
+          {{ getSubscriptionMonthText(item.status, item.subscription_month, item.CreatedAt) }}
         </p>
       </template>
       <template v-slot:item.start_subscrition="{ item }">
@@ -239,11 +239,15 @@ export default {
         return "Expired"
       }
     },
-    getSubscriptionMonthText(status, subscriptionMonth) {
+    getSubscriptionMonthText(status, subscriptionMonth, CreatedAt) {
       if(status === 0){
-        return `30 hari`;
-      }
-      else{
+        const createdDate = new Date(CreatedAt);
+        const currentDate = new Date();
+        const timeDifference = currentDate - createdDate;
+        const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
+        const dateCount = Math.floor(timeDifference / millisecondsPerDay);
+        return `${dateCount} hari`;
+      } else{
         if (subscriptionMonth === 1) {
         return '1 hari';
       } else if (subscriptionMonth === 7) {
