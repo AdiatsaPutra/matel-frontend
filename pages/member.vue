@@ -243,9 +243,7 @@ export default {
       if(status === 0){
         const createdAtDate = new Date(CreatedAt);
         const currentDate = new Date();
-        
         const timeDifference = currentDate - createdAtDate;
-        
         const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
         return `${daysDifference} hari`;
       } else{
