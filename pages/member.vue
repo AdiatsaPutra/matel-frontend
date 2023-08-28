@@ -22,12 +22,12 @@
       </template>
       <template v-slot:item.start_subscrition="{ item }">
         <p class="mt-4 mr-5 text-center">
-          {{ item.start_subscrition === "" || item.status === 2 ? "-" : formatDate(item.start_subscrition) }}
+          {{ item.start_subscrition === "" ? formatDate(item.CreatedAt) : item.status === 2 ? "-" : formatDate(item.start_subscrition) }}
         </p>
       </template>
       <template v-slot:item.end_subscription="{ item }">
         <p class="mt-4 mr-5 text-center">
-          {{ item.end_subscription === "" || item.status === 2 ? "-" : formatDate(item.end_subscription) }}
+          {{ item.end_subscription === "" ? formatDate(new Date(item.CreatedAt).setDate(new Date(item.CreatedAt).getDate() + 30)) : item.status === 2 ? "-" : formatDate(item.end_subscription) }}
         </p>
       </template>
       <template v-slot:item.status="{ item }">
