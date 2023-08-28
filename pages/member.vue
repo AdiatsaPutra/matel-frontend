@@ -241,12 +241,13 @@ export default {
     },
     getSubscriptionMonthText(status, subscriptionMonth, CreatedAt) {
       if(status === 0){
-        const createdDate = new Date(CreatedAt);
+        const createdAtDate = new Date(CreatedAt);
         const currentDate = new Date();
-        const timeDifference = currentDate - createdDate;
-        const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
-        const dateCount = Math.floor(timeDifference / millisecondsPerDay);
-        return `${dateCount} hari`;
+        
+        const timeDifference = currentDate - createdAtDate;
+        
+        const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        return `${daysDifference} hari`;
       } else{
         if (subscriptionMonth === 1) {
         return '1 hari';
