@@ -11,36 +11,68 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-data-table :headers="headers" 
-    :items="numberedItems" 
-    :search="search"
-   >
+    <v-data-table :headers="headers" :items="numberedItems" :search="search">
       <template v-slot:item.subscription_month="{ item }">
         <p class="mt-4 mr-5 text-center">
-          {{ getSubscriptionMonthText(item.status, item.subscription_month, item.CreatedAt) }}
+          {{
+            getSubscriptionMonthText(
+              item.status,
+              item.subscription_month,
+              item.CreatedAt
+            )
+          }}
         </p>
       </template>
       <template v-slot:item.start_subscrition="{ item }">
         <p class="mt-4 mr-5 text-center">
-          {{ item.start_subscrition === "" ? formatDate(item.CreatedAt) : item.status === 2 ? "-" : formatDate(item.start_subscrition) }}
+          {{
+            item.start_subscrition === ""
+              ? formatDate(item.CreatedAt)
+              : item.status === 2
+              ? "-"
+              : formatDate(item.start_subscrition)
+          }}
         </p>
       </template>
       <template v-slot:item.end_subscription="{ item }">
         <p class="mt-4 mr-5 text-center">
-          {{ item.end_subscription === "" ? formatDate(new Date(item.CreatedAt).setDate(new Date(item.CreatedAt).getDate() + 30)) : item.status === 2 ? "-" : formatDate(item.end_subscription) }}
+          {{
+            item.end_subscription === ""
+              ? formatDate(
+                  new Date(item.CreatedAt).setDate(
+                    new Date(item.CreatedAt).getDate() + 30
+                  )
+                )
+              : item.status === 2
+              ? "-"
+              : formatDate(item.end_subscription)
+          }}
         </p>
       </template>
       <template v-slot:item.status="{ item }">
         {{ getStatusText(item.status, item.end_subscription) }}
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn color="primary" height="30px" dark @click="openDetailModal(item)">
+        <v-btn
+          color="primary"
+          height="30px"
+          dark
+          @click="openDetailModal(item)"
+        >
           Detail
         </v-btn>
-        <v-btn color="primary" height="30px" outlined dark @click="openEditModal(item)">
+        <v-btn
+          color="primary"
+          height="30px"
+          outlined
+          dark
+          @click="openEditModal(item)"
+        >
           Ubah
         </v-btn>
-        <v-btn color="red" height="30px" dark @click="openConfirmModal(item)"> Hapus </v-btn>
+        <v-btn color="red" height="30px" dark @click="openConfirmModal(item)">
+          Hapus
+        </v-btn>
       </template>
     </v-data-table>
 
@@ -49,29 +81,41 @@
         <v-card-title>
           <span class="headline">Detail Pengguna</span>
         </v-card-title>
-         <div class="px-6">
-            <div>Nama Pengguna</div>
-            <div class="font-weight-bold">{{ selectedUser.username }}</div>
-            <div class="pb-5"></div>
-            <div>No HP</div>
-            <div class="font-weight-bold">{{ selectedUser.phone }}</div>
-            <div class="pb-5"></div>
-            <div>Password</div>
-            <div class="font-weight-bold">{{ selectedUser.password_to_view }}</div>
-            <div class="pb-5"></div>
-            <div>Status</div>
-            <div class="font-weight-bold">{{ getStatusText(selectedUser.status, selectedUser.end_subscription) }}</div>
-            <div class="pb-5"></div>
-            <div>Waktu Berlangganan</div>
-            <div class="font-weight-bold">{{ getSubscriptionMonthText(selectedUser.subscription_month) }}</div>
-            <div class="pb-5"></div>
-            <div>Awal Berlangganan</div>
-            <div class="font-weight-bold">{{ formatDate(selectedUser.start_subscrition) }}</div>
-            <div class="pb-5"></div>
-            <div>Akhir Berlangganan</div>
-            <div class="font-weight-bold">{{ formatDate(selectedUser.end_subscription) }}</div>
-            <div class="pb-5"></div>
-         </div>
+        <div class="px-6">
+          <div>Nama Pengguna</div>
+          <div class="font-weight-bold">{{ selectedUser.username }}</div>
+          <div class="pb-5"></div>
+          <div>No HP</div>
+          <div class="font-weight-bold">{{ selectedUser.phone }}</div>
+          <div class="pb-5"></div>
+          <div>Password</div>
+          <div class="font-weight-bold">
+            {{ selectedUser.password_to_view }}
+          </div>
+          <div class="pb-5"></div>
+          <div>Status</div>
+          <div class="font-weight-bold">
+            {{
+              getStatusText(selectedUser.status, selectedUser.end_subscription)
+            }}
+          </div>
+          <div class="pb-5"></div>
+          <div>Waktu Berlangganan</div>
+          <div class="font-weight-bold">
+            {{ getSubscriptionMonthText(selectedUser.subscription_month) }}
+          </div>
+          <div class="pb-5"></div>
+          <div>Awal Berlangganan</div>
+          <div class="font-weight-bold">
+            {{ formatDate(selectedUser.start_subscrition) }}
+          </div>
+          <div class="pb-5"></div>
+          <div>Akhir Berlangganan</div>
+          <div class="font-weight-bold">
+            {{ formatDate(selectedUser.end_subscription) }}
+          </div>
+          <div class="pb-5"></div>
+        </div>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" dark @click="closeDetailModal">Tutup</v-btn>
@@ -175,7 +219,7 @@ export default {
         .get("member", {
           params: {
             search: this.search,
-          }
+          },
         })
         .then((response) => {
           if (response.data.data === null) {
@@ -197,7 +241,7 @@ export default {
     },
     openEditModal(user) {
       this.selectedUser = user;
-      this.editUserSubscription = user.subscription_month.toString()
+      this.editUserSubscription = user.subscription_month.toString();
       this.isEditModalOpen = true;
     },
     closeEditModal() {
@@ -214,8 +258,8 @@ export default {
       this.$axios
         .delete(`delete-member/${this.selectedUser.id}`)
         .then((response) => {
-            this.closeEditModal();
-            this.fetchUser();
+          this.closeEditModal();
+          this.fetchUser();
         })
         .catch((error) => {
           console.error(error);
@@ -225,44 +269,46 @@ export default {
     getStatusText(status, end) {
       const currentDate = new Date();
       const subscriptionEndDate = new Date(end);
-      if(status === 0){
-        return "Trial"
+      if (status === 0) {
+        return "Trial";
       } else if (subscriptionEndDate > currentDate) {
         if (status === 0) {
-          return "Trial"
+          return "Trial";
         } else if (status === 1) {
-          return "Premium"
+          return "Premium";
         } else {
-          return ""
+          return "";
         }
       } else {
-        return "Expired"
+        return "Expired";
       }
     },
     getSubscriptionMonthText(status, subscriptionMonth, CreatedAt) {
-      if(status === 0){
+      if (status === 0) {
         const createdAtDate = new Date(CreatedAt);
         const currentDate = new Date();
         const timeDifference = currentDate - createdAtDate;
-        const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        const sub = 30 - daysDifference
+        const daysDifference = Math.floor(
+          timeDifference / (1000 * 60 * 60 * 24)
+        );
+        const sub = 1 - daysDifference;
         return `${sub} hari`;
-      } else{
-        if (subscriptionMonth === 1) {
-        return '1 hari';
-      } else if (subscriptionMonth === 7) {
-        return '1 minggu';
-      } else if (subscriptionMonth === 30) {
-        return '1 bulan';
-      } else if (subscriptionMonth > 30 && subscriptionMonth % 30 === 0) {
-        const months = subscriptionMonth / 30;
-        return `${months} bulan`;
-      } else if (subscriptionMonth > 7 && subscriptionMonth % 7 === 0) {
-        const weeks = subscriptionMonth / 7;
-        return `${weeks} minggu`;
       } else {
-        return `${subscriptionMonth} hari`;
-      }
+        if (subscriptionMonth === 1) {
+          return "1 hari";
+        } else if (subscriptionMonth === 7) {
+          return "1 minggu";
+        } else if (subscriptionMonth === 30) {
+          return "1 bulan";
+        } else if (subscriptionMonth > 30 && subscriptionMonth % 30 === 0) {
+          const months = subscriptionMonth / 30;
+          return `${months} bulan`;
+        } else if (subscriptionMonth > 7 && subscriptionMonth % 7 === 0) {
+          const weeks = subscriptionMonth / 7;
+          return `${weeks} minggu`;
+        } else {
+          return `${subscriptionMonth} hari`;
+        }
       }
     },
     saveUserChanges() {
@@ -270,16 +316,16 @@ export default {
         user_id: this.selectedUser.id,
         subscription_month: this.editUserSubscription,
       };
-      console.log(params)
+      console.log(params);
       this.$axios
-        .post('update-member', params)
+        .post("update-member", params)
         .then((response) => {
           this.closeEditModal();
-          this.fetchUser()
+          this.fetchUser();
         })
         .catch((error) => {
           this.closeEditModal();
-          this.fetchUser()
+          this.fetchUser();
         });
     },
     formatDate(date) {
@@ -288,16 +334,26 @@ export default {
       }
 
       const monthNames = [
-        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'December'
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus",
+        "September",
+        "Oktober",
+        "November",
+        "December",
       ];
 
-      const day = date.getDate().toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, "0");
       const month = monthNames[date.getMonth()];
       const year = date.getFullYear();
 
       const formattedDate = `${day} ${month} ${year}`;
-      
+
       return formattedDate;
     },
   },
