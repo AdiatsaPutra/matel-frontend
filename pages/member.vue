@@ -307,7 +307,7 @@ export default {
           const weeks = subscriptionMonth / 7;
           return `${weeks} minggu`;
         } else {
-          return `${subscriptionMonth} hari`;
+          return `0 hari`;
         }
       }
     },
