@@ -104,9 +104,9 @@
           <div class="font-weight-bold">
             {{
               getSubscriptionMonthText(
-                item.status,
-                item.subscription_month,
-                item.CreatedAt
+                selectedUser.status,
+                selectedUser.subscription_month,
+                selectedUser.CreatedAt
               )
             }}
           </div>
