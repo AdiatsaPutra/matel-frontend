@@ -102,7 +102,13 @@
           <div class="pb-5"></div>
           <div>Waktu Berlangganan</div>
           <div class="font-weight-bold">
-            {{ getSubscriptionMonthText(selectedUser.subscription_month) }}
+            {{
+              getSubscriptionMonthText(
+                item.status,
+                item.subscription_month,
+                item.CreatedAt
+              )
+            }}
           </div>
           <div class="pb-5"></div>
           <div>Awal Berlangganan</div>
