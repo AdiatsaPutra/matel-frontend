@@ -13,7 +13,7 @@
     </v-row>
     <v-data-table :headers="headers" :items="numberedItems" :search="search">
       <template v-slot:item.subscription_month="{ item }">
-        <p class="mt-4 mr-5 text-center">
+        <p class="mt-4 ml-5">
           {{
             getSubscriptionMonthText(
               item.status,
@@ -24,7 +24,7 @@
         </p>
       </template>
       <template v-slot:item.start_subscrition="{ item }">
-        <p class="mt-4 mr-5 text-center">
+        <p class="mt-4 ml-5">
           {{
             item.start_subscrition === ""
               ? formatDate(item.CreatedAt)
@@ -35,12 +35,12 @@
         </p>
       </template>
       <template v-slot:item.end_subscription="{ item }">
-        <p class="mt-4 mr-5 text-center">
+        <p class="mt-4 ml-5">
           {{
             item.end_subscription === ""
               ? formatDate(
                   new Date(item.CreatedAt).setDate(
-                    new Date(item.CreatedAt).getDate() + 30
+                    new Date(item.CreatedAt).getDate() + 1
                   )
                 )
               : item.status === 2
