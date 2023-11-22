@@ -1,269 +1,162 @@
 <template>
   <div>
     <v-row class="pb-10 mx-1">
-      <v-btn
-        v-if="cabang.length > 0"
-        height="40px"
-        color="primary"
-        @click="showUpload"
-        >Upload Data Kendaraan</v-btn
-      >
+      <v-btn v-if="cabang.length > 0" height="40px" color="primary" @click="showUpload">Upload Data Kendaraan</v-btn>
       <div v-if="cabang.length > 0" class="mx-2"></div>
-      <v-btn
-      v-if="cabang.length > 0"
-      height="40px"
-      color="red"
-      dark
-      @click="showGantikanData = true"
-      >Gantikan Data</v-btn
-      >
+      <v-btn v-if="cabang.length > 0" height="40px" color="red" dark @click="showGantikanData = true">Gantikan
+        Data</v-btn>
       <div v-if="cabang.length > 0" class="mx-2"></div>
-      <v-btn
-        v-if="cabang.length > 0"
-        height="40px"
-        color="purple"
-        dark
-        @click="downloadTemplate"
-        >Download Template</v-btn
-      >
+      <v-btn v-if="cabang.length > 0" height="40px" color="purple" dark @click="downloadTemplate">Download
+        Template</v-btn>
     </v-row>
-  <v-card >
-    <div class="mx-5 pt-5">
-      <div class="pt-6"></div>
-      <v-row class="mx-1">
-        <v-btn class="mb-4" color="primary" @click="openCreateDialog(true)">
-          Tambah Nama Data
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-row>
-          <v-col xs="10" lg="9">
-            <v-text-field
-              v-model="search"
-              label="Cari"
-              solo
-              dense
-            ></v-text-field>
-          </v-col>
-          <v-col xs="2" lg="2">
-            <v-btn
-              class="mb-4"
-              height="40px"
-              color="primary"
-              @click="fetchData"
-            >
-              Cari
+    <v-card>
+      <div class="mx-5 pt-5">
+        <div class="pt-6"></div>
+        <v-row class="mx-1">
+          <v-btn class="mb-4" color="primary" @click="openCreateDialog(true)">
+            Tambah Nama Data
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-row>
+            <v-col xs="10" lg="9">
+              <v-text-field v-model="search" label="Cari" solo dense></v-text-field>
+            </v-col>
+            <v-col xs="2" lg="2">
+              <v-btn class="mb-4" height="40px" color="primary" @click="fetchData">
+                Cari
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-row>
+        <v-data-table :headers="headers" :items="cabangWithTotal" :search="search" :options.sync="options"
+          :loading="loading">
+          <template v-slot:item.latest_created_at="{ item }">
+            {{ item.latest_created_at === "" ? "-" : new Intl.DateTimeFormat("id-ID", {
+              day: "numeric", month: "long",
+              year: "numeric"
+            }).format(new Date(item.latest_created_at)) }}
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <v-btn color="secondary" height="27px" min-width="60px" @click="editItem(item)">
+              <div class="text-caption">Edit</div>
             </v-btn>
-          </v-col>
-        </v-row>
-      </v-row>
-      <v-data-table
-        :headers="headers"
-        :items="cabangWithTotal"
-        :search="search"
-        :options.sync="options"
-        :loading="loading"
-      >
-        <template v-slot:item.latest_created_at="{ item }">
-          {{ item.latest_created_at === "" ? "-" :  new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "long", year: "numeric" }).format(new Date(item.latest_created_at)) }}
-        </template>
-        <template v-slot:item.actions="{ item }">
-          <v-btn
-            color="secondary"
-            height="27px"
-            min-width="60px"
-            @click="editItem(item)"
-          >
-            <div class="text-caption">Edit</div>
-          </v-btn>
-          <v-btn
-            color="red"
-            height="27px"
-            min-width="60px"
-            dark
-            @click="confirmDelete(item, true)"
-          >
-            <div class="text-caption">Hapus</div>
-          </v-btn>
-          <v-btn
-            color="primary"
-            height="27px"
-            min-width="60px"
-            dark
-            @click="confirmDelete(item, false)"
-          >
-            <div class="text-caption">Hapus Data Kendaraan</div>
-          </v-btn>
-        </template>
-      </v-data-table>
-    </div>
+            <v-btn color="red" height="27px" min-width="60px" dark @click="confirmDelete(item, true)">
+              <div class="text-caption">Hapus</div>
+            </v-btn>
+            <v-btn color="primary" height="27px" min-width="60px" dark @click="confirmDelete(item, false)">
+              <div class="text-caption">Hapus Data Kendaraan</div>
+            </v-btn>
+          </template>
+        </v-data-table>
+      </div>
 
-    <v-dialog v-model="createDialog" max-width="1000px" max-height="1000px">
-      <v-card>
-        <v-card-title>Tambah Cabang</v-card-title>
-        <v-card-text>
-          <v-form ref="createForm">
-            <v-text-field
-              v-model="newLeasing.nama_cabang"
-              :rules="nameRules"
-              outlined
-              label="Nama Cabang"
-            ></v-text-field>
-            <v-text-field
-              v-model="newLeasing.no_hp"
-              :rules="nameRules"
-              outlined
-              label="No HP"
-            ></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" min-width="160px" @click="createCabang">
-            Tambah
-          </v-btn>
-          <v-btn
-            color="secondary"
-            min-width="160px"
-            @click="openCreateDialog(false)"
-          >
-            Batal
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+      <v-dialog v-model="createDialog" max-width="1000px" max-height="1000px">
+        <v-card>
+          <v-card-title>Tambah Cabang</v-card-title>
+          <v-card-text>
+            <v-form ref="createForm">
+              <v-text-field v-model="newLeasing.nama_cabang" :rules="nameRules" outlined
+                label="Nama Cabang"></v-text-field>
+              <v-text-field v-model="newLeasing.no_hp" :rules="nameRules" outlined label="No HP"></v-text-field>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" min-width="160px" @click="createCabang">
+              Tambah
+            </v-btn>
+            <v-btn color="secondary" min-width="160px" @click="openCreateDialog(false)">
+              Batal
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
-    <v-dialog v-model="editDialog" max-width="1000px" max-height="1000px">
-  <v-card>
-    <v-card-title>Edit Cabang</v-card-title>
-    <v-card-text>
-      <v-form ref="editForm">
-        <v-text-field
-          v-model="editLeasing.nama_cabang"
-          :rules="nameRules"
-          outlined
-          label="Nama Cabang"
-        ></v-text-field>
-        <v-text-field
-          v-model="editLeasing.no_hp"
-          :rules="nameRules"
-          outlined
-          label="No HP"
-        ></v-text-field>
-      </v-form>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="primary" min-width="160px" @click="updateCabang">
-        Edit
-      </v-btn>
-      <v-btn color="secondary" min-width="160px" @click="cancelEdit">
-        Batal
-      </v-btn>
-    </v-card-actions>
-  </v-card>
-</v-dialog>
+      <v-dialog v-model="editDialog" max-width="1000px" max-height="1000px">
+        <v-card>
+          <v-card-title>Edit Cabang</v-card-title>
+          <v-card-text>
+            <v-form ref="editForm">
+              <v-text-field v-model="editLeasing.nama_cabang" :rules="nameRules" outlined
+                label="Nama Cabang"></v-text-field>
+              <v-text-field v-model="editLeasing.no_hp" :rules="nameRules" outlined label="No HP"></v-text-field>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" min-width="160px" @click="updateCabang">
+              Edit
+            </v-btn>
+            <v-btn color="secondary" min-width="160px" @click="cancelEdit">
+              Batal
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
 
-<v-dialog v-model="deleteDialog" max-width="400px">
-  <v-card>
-    <v-card-title>Konfirmasi Hapus</v-card-title>
-    <v-card-text> Anda yakin akan menghapus data ini? </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="secondary" @click="cancelDelete">Batal</v-btn>
-      <v-btn color="red" dark @click="deleteCabang">Hapus</v-btn>
-    </v-card-actions>
-  </v-card>
-</v-dialog>
+      <v-dialog v-model="deleteDialog" max-width="400px">
+        <v-card>
+          <v-card-title>Konfirmasi Hapus</v-card-title>
+          <v-card-text> Anda yakin akan menghapus data ini? </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="secondary" @click="cancelDelete">Batal</v-btn>
+            <v-btn color="red" dark @click="deleteCabang">Hapus</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
-<v-dialog v-model="showUploadModal" max-width="500">
-      <v-card class="pa-5">
-        <div class="text-h6 purple--text text--darken-4">UPLOAD DATA</div>
-        <div class="py-1"></div>
-
-       
-        <div class="py-1"></div>
-
-        <v-select
-          v-model="selectedUploadCabang"
-          :items="cabang"
-          item-text="nama_cabang"
-          item-value="id"
-          solo
-          dense
-          placeholder="Pilih Cabang"
-        ></v-select>
-
-        <v-file-input
-          v-model="file"
-          multiple
-          dense
-          placeholder="Pilih File"
-          solo
-          prepend-icon
-          @change="handleFileChange"
-        ></v-file-input>
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="red white--text"
-            height="32"
-            @click="showUploadModal = false"
-          >
-            Batal
-          </v-btn>
-          <div class="mx-2"></div>
-          <v-btn
-            color="primary white--text"
-            height="32"
-            :disabled="loading || success"
-            :loading="loading"
-            @click="uploadFile"
-          >
-            Upload
-          </v-btn>
-        </v-row>
-        <div class="py-2"></div>
-      </v-card>
-    </v-dialog>
+      <v-dialog v-model="showUploadModal" max-width="500">
+        <v-card class="pa-5">
+          <div class="text-h6 purple--text text--darken-4">UPLOAD DATA</div>
+          <div class="py-1"></div>
 
 
-    <v-dialog v-model="showGantikanData" max-width="500">
-      <v-card class="pa-5">
-        <div class="text-h6">Gantikan Data</div>
+          <div class="py-1"></div>
+          <v-autocomplete v-model="selectedUploadCabang" label="Pilih Cabang" :items="cabang" solo dense
+            item-text="nama_cabang" item-value="nama_cabang" placeholder="Pilih Cabang"></v-autocomplete>
+          <!-- <v-select v-model="selectedUploadCabang" :items="cabang" item-text="nama_cabang" item-value="id" solo dense
+            placeholder="Pilih Cabang"></v-select> -->
 
-        <div class="mb-5"></div>
-        <v-file-input
-          v-model="file"
-          multiple
-          dense
-          placeholder="Pilih File"
-          solo
-          prepend-icon
-          @change="handleFileChange"
-        ></v-file-input>
-        <div class="mb-2"></div>
-        <v-select
-          v-model="selectedGantikanDataCabang"
-          :items="cabang"
-          item-text="nama_cabang"
-          item-value="nama_cabang"
-          solo
-          dense
-          placeholder="Pilih Cabang"
-        ></v-select>
-        <div class="mb-5"></div>
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-btn color="red" dark @click="showGantikanData = false"
-            >Batal</v-btn
-          >
-          <div class="mx-2"></div>
-          <v-btn color="primary" @click="deleteKendaraan">Gantikan Data</v-btn>
-        </v-row>
-      </v-card>
-    </v-dialog>
-  </v-card>
+          <v-file-input v-model="file" multiple dense placeholder="Pilih File" solo prepend-icon
+            @change="handleFileChange"></v-file-input>
+          <v-row>
+            <v-spacer></v-spacer>
+            <v-btn color="red white--text" height="32" @click="showUploadModal = false">
+              Batal
+            </v-btn>
+            <div class="mx-2"></div>
+            <v-btn color="primary white--text" height="32" :disabled="loading || success" :loading="loading"
+              @click="uploadFile">
+              Upload
+            </v-btn>
+          </v-row>
+          <div class="py-2"></div>
+        </v-card>
+      </v-dialog>
+
+
+      <v-dialog v-model="showGantikanData" max-width="500">
+        <v-card class="pa-5">
+          <div class="text-h6">Gantikan Data</div>
+
+          <div class="mb-5"></div>
+          <v-file-input v-model="file" multiple dense placeholder="Pilih File" solo prepend-icon
+            @change="handleFileChange"></v-file-input>
+          <div class="mb-2"></div>
+          <v-autocomplete v-model="selectedUploadCabang" label="Pilih Cabang" :items="cabang" item-text="nama_cabang"
+            item-value="nama_cabang" solo dense placeholder="Pilih Cabang"></v-autocomplete>
+          <div class="mb-5"></div>
+          <v-row>
+            <v-spacer></v-spacer>
+            <v-btn color="red" dark @click="showGantikanData = false">Batal</v-btn>
+            <div class="mx-2"></div>
+            <v-btn color="primary" @click="deleteKendaraan">Gantikan Data</v-btn>
+          </v-row>
+        </v-card>
+      </v-dialog>
+    </v-card>
   </div>
 </template>
 
@@ -355,18 +248,18 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-      },
-      fetchDataWithTotal() {
-        this.loading = true;
-        this.$axios
+    },
+    fetchDataWithTotal() {
+      this.loading = true;
+      this.$axios
         .get("cabang-with-total", {
-          params:{
+          params: {
             leasing_id: this.leasingId,
           }
         })
         .then((response) => {
           console.log(response.data.data)
-          if(response.data.data != null){
+          if (response.data.data != null) {
             this.cabangWithTotal = response.data.data;
           }
         })
@@ -381,10 +274,10 @@ export default {
       this.$store.dispatch("updateString", "");
       if (this.$refs.createForm.validate()) {
         this.$axios
-        .post("cabang", this.newLeasing)
-        .then((response) => {
-          this.$refs.createForm.reset();
-          this.fetchData();
+          .post("cabang", this.newLeasing)
+          .then((response) => {
+            this.$refs.createForm.reset();
+            this.fetchData();
             this.newLeasing = {
               leasing_id: this.leasingId,
               nama_cabang: "",
@@ -399,54 +292,54 @@ export default {
       }
     },
     updateCabang() {
-    if (this.$refs.editForm.validate()) {
-      const { id, ...data } = this.editLeasing;
-      this.$axios
-        .put(`cabang/${id}`, data)
-        .then((response) => {
-          this.$refs.editForm.reset();
-          this.fetchData();
-          this.editLeasing = {
-            id: "",
-            nama_cabang: "",
-            no_hp: "",
-          };
-          this.editDialog = false;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  },
-  deleteCabang() {
-    this.$store.dispatch("updateString", "");
-    const { id } = this.editLeasing;
-    if (this.isDeleteKendaraan === true){
-      this.$axios
-        .delete(`cabang/${id}`, {
-          params: {
-            "query": "delete-cabang"
-          }
-        })
-        .then((response) => {
-          this.$store.dispatch("updateString", "Cabang Added");
-          this.deleteDialog = false;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-      }else{
-      this.$axios
-        .delete(`cabang/${id}`)
-        .then((response) => {
-          this.$store.dispatch("updateString", "Cabang Added");
-          this.deleteDialog = false;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      if (this.$refs.editForm.validate()) {
+        const { id, ...data } = this.editLeasing;
+        this.$axios
+          .put(`cabang/${id}`, data)
+          .then((response) => {
+            this.$refs.editForm.reset();
+            this.fetchData();
+            this.editLeasing = {
+              id: "",
+              nama_cabang: "",
+              no_hp: "",
+            };
+            this.editDialog = false;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    },
+    deleteCabang() {
+      this.$store.dispatch("updateString", "");
+      const { id } = this.editLeasing;
+      if (this.isDeleteKendaraan === true) {
+        this.$axios
+          .delete(`cabang/${id}`, {
+            params: {
+              "query": "delete-cabang"
+            }
+          })
+          .then((response) => {
+            this.$store.dispatch("updateString", "Cabang Added");
+            this.deleteDialog = false;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        this.$axios
+          .delete(`cabang/${id}`)
+          .then((response) => {
+            this.$store.dispatch("updateString", "Cabang Added");
+            this.deleteDialog = false;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
 
-    }
+      }
     },
     handleFileChange() {
       this.formData = new FormData();
@@ -489,12 +382,12 @@ export default {
       if (this.formData) {
         const cabangFiltered = this.cabang.filter(
           (item) => item.id === this.selectedUploadCabang
-          );
-          const cabangId = cabangFiltered[0].id;
-          const cabangName = cabangFiltered[0].nama_cabang;
-          this.formData.append("cabang_id", cabangId);
-          this.formData.append("cabang_name", cabangName);
-          this.$axios
+        );
+        const cabangId = cabangFiltered[0].id;
+        const cabangName = cabangFiltered[0].nama_cabang;
+        this.formData.append("cabang_id", cabangId);
+        this.formData.append("cabang_name", cabangName);
+        this.$axios
           .post("upload-leasing-per-cabang", this.formData, {
             headers: {
               "Content-Type": "multipart/form-data",
