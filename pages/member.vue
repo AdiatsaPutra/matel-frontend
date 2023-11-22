@@ -2,13 +2,8 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-text-field
-          v-model="search"
-          placeholder="Cari member berdasarkan nama"
-          dense
-          solo
-          prepend-inner-icon="mdi-magnify"
-        ></v-text-field>
+        <v-text-field v-model="search" placeholder="Cari member berdasarkan nama" dense solo
+          prepend-inner-icon="mdi-magnify"></v-text-field>
       </v-col>
     </v-row>
     <v-data-table :headers="headers" :items="numberedItems" :search="search">
@@ -24,26 +19,26 @@
         </p>
       </template>
       <template v-slot:item.start_subscrition="{ item }">
-        <p class="mt-4 ml-5">
+        <p class="mt-4">
           {{
             item.start_subscrition === ""
-              ? formatDate(item.CreatedAt)
-              : item.status === 2
+            ? formatDate(item.CreatedAt)
+            : item.status === 2
               ? "-"
               : formatDate(item.start_subscrition)
           }}
         </p>
       </template>
       <template v-slot:item.end_subscription="{ item }">
-        <p class="mt-4 ml-5">
+        <p class="mt-4">
           {{
             item.end_subscription === ""
-              ? formatDate(
-                  new Date(item.CreatedAt).setDate(
-                    new Date(item.CreatedAt).getDate() + 1
-                  )
-                )
-              : item.status === 2
+            ? formatDate(
+              new Date(item.CreatedAt).setDate(
+                new Date(item.CreatedAt).getDate() + 1
+              )
+            )
+            : item.status === 2
               ? "-"
               : formatDate(item.end_subscription)
           }}
@@ -53,21 +48,10 @@
         {{ getStatusText(item.status, item.end_subscription) }}
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn
-          color="primary"
-          height="30px"
-          dark
-          @click="openDetailModal(item)"
-        >
+        <v-btn color="primary" height="30px" dark @click="openDetailModal(item)">
           Detail
         </v-btn>
-        <v-btn
-          color="primary"
-          height="30px"
-          outlined
-          dark
-          @click="openEditModal(item)"
-        >
+        <v-btn color="primary" height="30px" outlined dark @click="openEditModal(item)">
           Ubah
         </v-btn>
         <v-btn color="red" height="30px" dark @click="openConfirmModal(item)">
@@ -98,6 +82,16 @@
             {{
               getStatusText(selectedUser.status, selectedUser.end_subscription)
             }}
+          </div>
+          <div class="pb-5"></div>
+          <div>Email</div>
+          <div class="font-weight-bold">
+            {{ selectedUser.email }}
+          </div>
+          <div class="pb-5"></div>
+          <div>Device ID</div>
+          <div class="font-weight-bold">
+            {{ selectedUser.device_id }}
           </div>
           <div class="pb-5"></div>
           <div>Waktu Berlangganan</div>
@@ -135,18 +129,8 @@
           <span class="headline">Ubah Subscription Pengguna</span>
         </v-card-title>
         <v-card-text>
-          <v-text-field
-            v-model="selectedUser.username"
-            label="Username"
-            readonly
-            outlined
-          ></v-text-field>
-          <v-select
-            v-model="editUserSubscription"
-            :items="subscriptionOptions"
-            label="Subscription"
-            outlined
-          ></v-select>
+          <v-text-field v-model="selectedUser.username" label="Username" readonly outlined></v-text-field>
+          <v-select v-model="editUserSubscription" :items="subscriptionOptions" label="Subscription" outlined></v-select>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -166,9 +150,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" dark @click="deleteUser(selectedUser)"
-            >Ya</v-btn
-          >
+          <v-btn color="primary" dark @click="deleteUser(selectedUser)">Ya</v-btn>
           <v-btn color="red" dark @click="closeConfirmModal">Tidak</v-btn>
         </v-card-actions>
       </v-card>
@@ -196,6 +178,8 @@ export default {
         { text: "Nama", value: "username" },
         { text: "No HP", value: "phone" },
         { text: "Status", value: "status" },
+        { text: "Email", value: "email" },
+        { text: "Device ID", value: "device_id" },
         { text: "Waktu Berlangganan", value: "subscription_month" },
         { text: "Mulai Berlangganan", value: "start_subscrition" },
         { text: "Akhir Berlangganan", value: "end_subscription" },
