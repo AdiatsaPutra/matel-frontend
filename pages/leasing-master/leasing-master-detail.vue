@@ -145,7 +145,7 @@
           <v-file-input v-model="file" multiple dense placeholder="Pilih File" solo prepend-icon
             @change="handleFileChange"></v-file-input>
           <div class="mb-2"></div>
-          <v-autocomplete v-model="selectedUploadCabang" label="Pilih Cabang" :items="cabang" item-text="nama_cabang"
+          <v-autocomplete v-model="selectedGantikanCabang" label="Pilih Cabang" :items="cabang" item-text="nama_cabang"
             item-value="id" solo dense placeholder="Pilih Cabang"></v-autocomplete>
           <div class="mb-5"></div>
           <v-row>
