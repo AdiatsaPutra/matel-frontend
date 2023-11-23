@@ -115,7 +115,7 @@
 
           <div class="py-1"></div>
           <v-autocomplete v-model="selectedUploadCabang" label="Pilih Cabang" :items="cabang" solo dense
-            item-text="nama_cabang" item-value="nama_cabang" placeholder="Pilih Cabang"></v-autocomplete>
+            item-text="nama_cabang" item-value="id" placeholder="Pilih Cabang"></v-autocomplete>
           <!-- <v-select v-model="selectedUploadCabang" :items="cabang" item-text="nama_cabang" item-value="id" solo dense
             placeholder="Pilih Cabang"></v-select> -->
 
@@ -146,7 +146,7 @@
             @change="handleFileChange"></v-file-input>
           <div class="mb-2"></div>
           <v-autocomplete v-model="selectedUploadCabang" label="Pilih Cabang" :items="cabang" item-text="nama_cabang"
-            item-value="nama_cabang" solo dense placeholder="Pilih Cabang"></v-autocomplete>
+            item-value="id" solo dense placeholder="Pilih Cabang"></v-autocomplete>
           <div class="mb-5"></div>
           <v-row>
             <v-spacer></v-spacer>

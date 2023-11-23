@@ -3,14 +3,8 @@
     <div v-if="!isDetail">
       <div>Data Kendaraan {{ leasingName }}</div>
       <v-row class="pt-5 mx-1">
-        <v-text-field
-          v-model="search"
-          placeholder="Cari berdasarkan leasing, cabang, atau nomor polisi"
-          solo
-          dense
-          prepend-inner-icon="mdi-magnify"
-          @input="debouncedFetchLeasing"
-        ></v-text-field>
+        <v-text-field v-model="search" placeholder="Cari berdasarkan leasing, cabang, atau nomor polisi" solo dense
+          prepend-inner-icon="mdi-magnify" @input="debouncedFetchLeasing"></v-text-field>
       </v-row>
     </div>
     <v-card v-else>
@@ -20,105 +14,48 @@
           <div class="mb-5"></div>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.leasing"
-                label="Leasing"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.leasing" label="Leasing" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.cabangData"
-                label="Cabang"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.cabangData" label="Cabang" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.no_kontrak"
-                label="No. Kontrak"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.no_kontrak" label="No. Kontrak" readonly outlined></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.nama_debitur"
-                label="Nama Debitur"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.nama_debitur" label="Nama Debitur" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.nomor_polisi"
-                label="Nomor Polisi"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.nomor_polisi" label="Nomor Polisi" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.sisa_hutang"
-                label="Sisa Hutang"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.sisa_hutang" label="Sisa Hutang" readonly outlined></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.tipe"
-                label="Tipe"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.tipe" label="Tipe" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.tahun"
-                label="Tahun"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.tahun" label="Tahun" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.no_rangka"
-                label="No. Rangka"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.no_rangka" label="No. Rangka" readonly outlined></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.no_mesin"
-                label="No. Mesin"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.no_mesin" label="No. Mesin" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.pic"
-                label="PIC"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.pic" label="PIC" readonly outlined></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-spacer></v-spacer>
-            <v-btn color="primary" class="ma-5" dark @click="isDetail = false"
-              >Kembali</v-btn
-            >
+            <v-btn color="primary" class="ma-5" dark @click="isDetail = false">Kembali</v-btn>
           </v-row>
         </v-col>
       </v-row>
@@ -127,15 +64,8 @@
       Total Data: {{ kendaraanTotal }}
     </div>
 
-    <v-data-table
-      v-if="!isDetail"
-      :headers="headers"
-      :items="items"
-      :search="search"
-      :loading="loading"
-      hide-default-footer
-      disable-pagination
-    >
+    <v-data-table v-if="!isDetail" :headers="headers" :items="items" :search="search" :loading="loading"
+      hide-default-footer disable-pagination>
       <template v-slot:item.CreatedAt="{ item }">
         {{ new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "long", year: "numeric" }).format(items.CreatedAt) }}
       </template>
@@ -148,36 +78,29 @@
         </v-btn>
       </template>
       <template v-slot:footer>
-          <v-pagination
-          class="py-5"
-          v-model="currentPage"
-          :length="Math.ceil(kendaraanTotal / perPage)"
-          prev-icon="mdi-chevron-left"
-          next-icon="mdi-chevron-right"
-          :total-visible="12"
-          :disabled="loading"
-          @input="handlePageChange"
-        ></v-pagination>
-        </template>
+        <v-pagination class="py-5" v-model="currentPage" :length="Math.ceil(kendaraanTotal / perPage)"
+          prev-icon="mdi-chevron-left" next-icon="mdi-chevron-right" :total-visible="12" :disabled="loading"
+          @input="handlePageChange"></v-pagination>
+      </template>
     </v-data-table>
 
     <v-dialog v-model="showDeleteDialog" max-width="500">
-    <v-card>
-      <div class="pt-5"></div>
-      <div class="text-medium px-5">
-        Anda yakin akan menghapus data ini?
-      </div>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" height="27px" dark @click="showDeleteDialog = false">
-          Batal
-        </v-btn>
-        <v-btn color="red" height="27px" dark @click="deleteKendaraan">
-          Hapus
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      <v-card>
+        <div class="pt-5"></div>
+        <div class="text-medium px-5">
+          Anda yakin akan menghapus data ini?
+        </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" height="27px" dark @click="showDeleteDialog = false">
+            Batal
+          </v-btn>
+          <v-btn color="red" height="27px" dark @click="deleteKendaraan">
+            Hapus
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -268,9 +191,9 @@ export default {
   },
   methods: {
     handlePageChange(page) {
-    this.currentPage = page;
-    this.fetchLeasing();
-  },
+      this.currentPage = page;
+      this.fetchLeasing();
+    },
     fetchCabang() {
       this.loading = true;
       this.$axios
@@ -360,7 +283,7 @@ export default {
       this.cabangName = cabangFiltered[0].nama_cabang === 'All' ? '' : cabangFiltered[0].nama_cabang;
       this.fetchLeasing();
     },
-    editItem(itemId) {},
+    editItem(itemId) { },
     showDeleteKendaraanDialog(itemId) {
       this.$store.dispatch("updateString", "");
       this.itemToDelete = itemId;
@@ -369,8 +292,8 @@ export default {
     deleteKendaraan() {
       this.loading = true;
       this.$axios
-      .delete(`delete-kendaraan/${this.itemToDelete}`)
-      .then((response) => {
+        .delete(`delete-kendaraan/${this.itemToDelete}`)
+        .then((response) => {
           this.fetchLeasing();
           this.fetchCabang();
           this.fetchLeasingTotal();
@@ -388,7 +311,7 @@ export default {
       this.showModal = !this.showModal;
       this.selectedDownloadCabang = null;
     },
-    
+
   },
 };
 </script>
