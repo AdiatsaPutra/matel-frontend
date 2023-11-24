@@ -5,6 +5,11 @@
         <v-text-field v-model="search" placeholder="Cari member berdasarkan nama" dense solo
           prepend-inner-icon="mdi-magnify"></v-text-field>
       </v-col>
+      <v-col>
+        <v-btn color="primary" height="40px" dark @click="userChange">
+          Download Excel
+        </v-btn>
+      </v-col>
     </v-row>
     <v-data-table :headers="headers" :items="numberedItems" :search="search">
       <template v-slot:item.subscription_month="{ item }">
@@ -312,6 +317,38 @@ export default {
         .then((response) => {
           this.closeEditModal();
           this.fetchUser();
+        })
+        .catch((error) => {
+          this.closeEditModal();
+          this.fetchUser();
+        });
+    },
+    userChange() {
+      this.$axios
+        .get("member-change", {
+          responseType: 'blob',
+        })
+        .then((response) => {
+          // Create a Blob from the response data
+          const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+          // Create a link element
+          const link = document.createElement('a');
+
+          // Set the download attribute with the desired file name
+          link.download = 'excel_file.xlsx';
+
+          // Create a URL for the Blob and set it as the href attribute of the link
+          link.href = window.URL.createObjectURL(blob);
+
+          // Append the link to the document
+          document.body.appendChild(link);
+
+          // Programmatically trigger a click on the link to start the download
+          link.click();
+
+          // Remove the link from the document
+          document.body.removeChild(link);
         })
         .catch((error) => {
           this.closeEditModal();
