@@ -8,6 +8,8 @@
       <div v-if="cabang.length > 0" class="mx-2"></div>
       <v-btn v-if="cabang.length > 0" height="40px" color="purple" dark @click="downloadTemplate">Download
         Template</v-btn>
+      <div v-if="cabang.length > 0" class="mx-2"></div>
+      <v-btn v-if="cabang.length > 0" height="40px" color="orange" dark @click="exportExcel">Export Excel</v-btn>
     </v-row>
     <v-card>
       <div class="mx-5 pt-5">
@@ -409,25 +411,42 @@ export default {
           });
       }
     },
-    downloadTemplate() {
-      const endpoint = "/download-template-cabang";
-      const url = this.$axios.defaults.baseURL + endpoint;
-
+    exportExcel() {
+      this.loading = true;
       this.$axios
-        .get("download-template-cabang")
+        .get("cabang-export", {
+          params: {
+            leasing_id: this.leasingId,
+          },
+          responseType: 'blob', // Specify the response type as 'blob'
+        })
         .then((response) => {
-          const downloadLink = document.createElement("a");
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const filename = "leasing-template-cabang.csv";
-          downloadLink.href = url;
-          downloadLink.setAttribute("download", filename);
-          document.body.appendChild(downloadLink);
-          downloadLink.click();
-          document.body.removeChild(downloadLink);
-          window.URL.revokeObjectURL(url);
-          this.showModal = false;
+          // Create a Blob from the response data
+          const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+          // Create a link element
+          const link = document.createElement('a');
+
+          // Set the download attribute with the desired file name
+          link.download = 'excel_file.xlsx';
+
+          // Create a URL for the Blob and set it as the href attribute of the link
+          link.href = window.URL.createObjectURL(blob);
+
+          // Append the link to the document
+          document.body.appendChild(link);
+
+          // Programmatically trigger a click on the link to start the download
+          link.click();
+
+          // Remove the link from the document
+          document.body.removeChild(link);
         })
         .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     cancelDelete() {
