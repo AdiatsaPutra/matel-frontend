@@ -449,6 +449,25 @@ export default {
           this.loading = false;
         });
     },
+    downloadTemplate() {
+      const endpoint = "/download-template-cabang";
+      const url = this.$axios.defaults.baseURL + endpoint;
+
+      this.$axios
+        .get("download-template-cabang")
+        .then((response) => {
+          const downloadLink = document.createElement("a");
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const filename = "leasing-template-cabang.csv";
+          downloadLink.href = url;
+          downloadLink.setAttribute("download", filename);
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+          window.URL.revokeObjectURL(url);
+          this.showModal = false;
+        })
+    },
     cancelDelete() {
       this.deleteDialog = false;
     },

@@ -3,27 +3,15 @@
     <div v-if="!isDetail">
       <div>Data Kendaraan</div>
       <v-row class="pt-5 mx-1">
-        
-        <v-btn height="40px" color="primary" @click="uploadModal(false)"
-          >Upload Data Kendaraan</v-btn
-        >
+
+        <v-btn height="40px" color="primary" @click="uploadModal(false)">Upload Data Kendaraan</v-btn>
         <div class="mx-2"></div>
-        <v-btn height="40px" color="orange" dark @click="uploadModal(true)"
-        >Ganti Semua Data</v-btn
-        >
+        <v-btn height="40px" color="orange" dark @click="uploadModal(true)">Ganti Semua Data</v-btn>
         <div class="mx-2"></div>
-        <v-btn height="40px" color="purple" dark @click="downloadTemplate"
-        >Download Template</v-btn
-        >
+        <v-btn height="40px" color="purple" dark @click="downloadTemplate">Download Template</v-btn>
         <div class="mx-2"></div>
-        <v-text-field
-          v-model="search"
-          placeholder="Cari berdasarkan leasing, cabang atau nomor polisi"
-          solo
-          dense
-          prepend-inner-icon="mdi-magnify"
-          @input="debouncedFetchLeasing"
-        ></v-text-field>
+        <v-text-field v-model="search" placeholder="Cari berdasarkan leasing, cabang atau nomor polisi" solo dense
+          prepend-inner-icon="mdi-magnify" @input="debouncedFetchLeasing"></v-text-field>
       </v-row>
     </div>
     <v-card v-else class="mt-5">
@@ -33,105 +21,48 @@
           <div class="mb-5"></div>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.leasing"
-                label="Leasing"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.leasing" label="Leasing" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.cabang"
-                label="Cabang"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.cabang" label="Cabang" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.no_kontrak"
-                label="No. Kontrak"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.no_kontrak" label="No. Kontrak" readonly outlined></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.nama_debitur"
-                label="Nama Debitur"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.nama_debitur" label="Nama Debitur" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.nomor_polisi"
-                label="Nomor Polisi"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.nomor_polisi" label="Nomor Polisi" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.sisa_hutang"
-                label="Sisa Hutang"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.sisa_hutang" label="Sisa Hutang" readonly outlined></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.tipe"
-                label="Tipe"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.tipe" label="Tipe" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.tahun"
-                label="Tahun"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.tahun" label="Tahun" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.no_rangka"
-                label="No. Rangka"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.no_rangka" label="No. Rangka" readonly outlined></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.no_mesin"
-                label="No. Mesin"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.no_mesin" label="No. Mesin" readonly outlined></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                v-model="selectedLeasing.pic"
-                label="PIC"
-                readonly
-                outlined
-              ></v-text-field>
+              <v-text-field v-model="selectedLeasing.pic" label="PIC" readonly outlined></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-spacer></v-spacer>
-            <v-btn color="primary" class="ma-5" dark @click="isDetail = false"
-              >Kembali</v-btn
-            >
+            <v-btn color="primary" class="ma-5" dark @click="isDetail = false">Kembali</v-btn>
           </v-row>
         </v-col>
       </v-row>
@@ -140,18 +71,11 @@
       Total Data: {{ loading ? 'Loading...' : total }}
     </div>
 
-    <v-data-table
-      v-if="!isDetail"
-      :headers="headers"
-      :items="items"
-      :search="search"
-      :loading="loading"
-      hide-default-footer
-      disable-pagination
-    >
-    <template v-slot:item.id="{ item, index }">
-      <td>{{ index + 1 }}</td> 
-    </template>
+    <v-data-table v-if="!isDetail" :headers="headers" :items="items" :search="search" :loading="loading"
+      hide-default-footer disable-pagination>
+      <template v-slot:item.id="{ item, index }">
+        <td>{{ index + 1 }}</td>
+      </template>
       <template v-slot:item.sisa_hutang="{ item }">
         {{ formatCurrency(item.sisa_hutang) }}
       </template>
@@ -168,17 +92,9 @@
         </v-btn>
       </template>
       <template v-slot:footer>
-          <v-pagination
-          class="py-5"
-          v-model="currentPage"
-          :length="Math.ceil(total / perPage)"
-          prev-icon="mdi-chevron-left"
-          next-icon="mdi-chevron-right"
-          :total-visible="12"
-          :disabled="loading"
-          @input="handlePageChange"
-        ></v-pagination>
-        </template>
+        <v-pagination class="py-5" v-model="currentPage" :length="Math.ceil(total / perPage)" prev-icon="mdi-chevron-left"
+          next-icon="mdi-chevron-right" :total-visible="12" :disabled="loading" @input="handlePageChange"></v-pagination>
+      </template>
     </v-data-table>
 
     <v-dialog v-model="showModal" max-width="500">
@@ -211,43 +127,20 @@
         </v-alert>
         <div class="py-1"></div>
 
-        <v-file-input
-          v-model="file"
-          multiple
-          dense
-          placeholder="Pilih File"
-          solo
-          prepend-icon
-          @change="handleFileChange"
-        ></v-file-input>
+        <v-file-input v-model="file" multiple dense placeholder="Pilih File" solo prepend-icon
+          @change="handleFileChange"></v-file-input>
         <v-row>
           <v-spacer></v-spacer>
-          <v-btn
-            color="red white--text"
-            height="32"
-            @click="uploadModal"
-          >
+          <v-btn color="red white--text" height="32" @click="uploadModal">
             Batal
           </v-btn>
           <div class="mx-2"></div>
-          <v-btn
-          v-if="isGantikanData"
-            color="primary white--text"
-            height="32"
-            :disabled="isLoading || success || file === null"
-            :loading="isLoading"
-            @click="updateAllKendaraan"
-          >
+          <v-btn v-if="isGantikanData" color="primary white--text" height="32"
+            :disabled="isLoading || success || file === null" :loading="isLoading" @click="updateAllKendaraan">
             Upload
           </v-btn>
-          <v-btn
-          v-else
-            color="primary white--text"
-            height="32"
-            :disabled="isLoading || success || file === null"
-            :loading="isLoading"
-            @click="uploadFile"
-          >
+          <v-btn v-else color="primary white--text" height="32" :disabled="isLoading || success || file === null"
+            :loading="isLoading" @click="uploadFile">
             Upload
           </v-btn>
         </v-row>
@@ -256,22 +149,22 @@
     </v-dialog>
 
     <v-dialog v-model="showDeleteDialog" max-width="500">
-    <v-card>
-      <div class="pt-5"></div>
-      <div class="text-medium px-5">
-        Anda yakin akan menghapus data ini?
-      </div>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" height="27px" dark @click="showDeleteDialog = false">
-          Batal
-        </v-btn>
-        <v-btn color="red" height="27px" dark @click="deleteKendaraan">
-          Hapus
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      <v-card>
+        <div class="pt-5"></div>
+        <div class="text-medium px-5">
+          Anda yakin akan menghapus data ini?
+        </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" height="27px" dark @click="showDeleteDialog = false">
+            Batal
+          </v-btn>
+          <v-btn color="red" height="27px" dark @click="deleteKendaraan">
+            Hapus
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -297,7 +190,7 @@ export default {
       selectedDownloadCabang: null,
       selectedUploadCabang: null,
       showModal: false,
-      showUploadModal: false, 
+      showUploadModal: false,
       isLoading: false,
       showDeleteDialog: false,
       itemToDelete: null,
@@ -321,7 +214,7 @@ export default {
         { text: "Actions", value: "actions" },
       ];
     },
-   
+
   },
   mounted() {
     this.fetchLeasingTotal();
@@ -332,15 +225,15 @@ export default {
         if (newString === "Kendaraan Deleted") {
           this.fetchLeasing();
           this.fetchLeasingTotal();
-        } 
+        }
       }
     );
   },
   methods: {
     handlePageChange(page) {
-    this.currentPage = page;
-    this.fetchLeasing();
-  },
+      this.currentPage = page;
+      this.fetchLeasing();
+    },
     fetchLeasingTotal() {
       this.loading = true;
       this.$axios
@@ -359,41 +252,41 @@ export default {
     searchLeasing() {
       this.loading = true;
       this.$axios
-      .get("kendaraan", {
-        params: {
-          search: this.search,
-          page: this.currentPage,
-          limit: this.perPage,
-        },
-      })
-      .then((response) => {
-        if(this.search === ''){
-          this.items = response.data.data.kendaraan;
-        }else{
-          this.items = response.data.data;
-        }
-        this.loading = false;
-      })
-      .catch((error) => {
-      })
+        .get("kendaraan", {
+          params: {
+            search: this.search,
+            page: this.currentPage,
+            limit: this.perPage,
+          },
+        })
+        .then((response) => {
+          if (this.search === '') {
+            this.items = response.data.data.kendaraan;
+          } else {
+            this.items = response.data.data;
+          }
+          this.loading = false;
+        })
+        .catch((error) => {
+        })
     },
     fetchLeasing() {
       this.loading = true;
       this.$axios
-      .get("kendaraan", {
-        params: {
-          search: this.search,
-          page: this.currentPage,
-          limit: this.perPage,
-        },
-      })
-      .then((response) => {
-        if(this.search === ''){
-          this.items = response.data.data.kendaraan;
-        }else{
-          this.items = response.data.data;
-        }
-        this.loading = false;
+        .get("kendaraan", {
+          params: {
+            search: this.search,
+            page: this.currentPage,
+            limit: this.perPage,
+          },
+        })
+        .then((response) => {
+          if (this.search === '') {
+            this.items = response.data.data.kendaraan;
+          } else {
+            this.items = response.data.data;
+          }
+          this.loading = false;
         })
         .catch((error) => {
         })
@@ -443,16 +336,20 @@ export default {
       this.$axios
         .get("download-template")
         .then((response) => {
-          const downloadLink = document.createElement("a");
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const filename = "leasing-template.csv";
-          downloadLink.href = url;
-          downloadLink.setAttribute("download", filename);
-          document.body.appendChild(downloadLink);
-          downloadLink.click();
-          document.body.removeChild(downloadLink);
-          window.URL.revokeObjectURL(url);
-          this.showModal = false;
+          try {
+            const downloadLink = document.createElement("a");
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const filename = "leasing-template.csv";
+            downloadLink.href = url;
+            downloadLink.setAttribute("download", filename);
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            window.URL.revokeObjectURL(url);
+            this.showModal = false;
+          } catch (error) {
+            console.log(error)
+          }
         })
         .catch((error) => {
           console.error("Failed to download file:", error);
@@ -469,7 +366,7 @@ export default {
       this.selectedLeasing = this.items.find((item) => item.id === itemId);
       this.isDetail = true;
     },
-    editItem(itemId) {},
+    editItem(itemId) { },
     updateAllKendaraan() {
       this.loading = true;
       this.$axios
@@ -491,8 +388,8 @@ export default {
     deleteKendaraan() {
       this.loading = true;
       this.$axios
-      .delete(`delete-kendaraan/${this.itemToDelete}`)
-      .then((response) => {
+        .delete(`delete-kendaraan/${this.itemToDelete}`)
+        .then((response) => {
           this.showDeleteDialog = false;
           this.fetchLeasingTotal();
           this.fetchLeasing();
