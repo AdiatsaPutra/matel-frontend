@@ -52,6 +52,9 @@
       <template v-slot:item.status="{ item }">
         {{ getStatusText(item.status, item.end_subscription) }}
       </template>
+      <template v-slot:item.device_id="{ item }">
+        {{ item.device_id.substring(0, 15) }}
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-btn color="primary" height="30px" dark @click="openDetailModal(item)">
           Detail
