@@ -449,6 +449,9 @@ export default {
           this.loading = false;
         });
     },
+    cancelDelete() {
+      this.deleteDialog = false;
+    },
     downloadTemplate() {
       const endpoint = "/download-template-cabang";
       const url = this.$axios.defaults.baseURL + endpoint;
@@ -467,9 +470,6 @@ export default {
           window.URL.revokeObjectURL(url);
           this.showModal = false;
         })
-    },
-    cancelDelete() {
-      this.deleteDialog = false;
     },
     confirmDelete(item, deleteKendaraan) {
       this.isDeleteKendaraan = deleteKendaraan
