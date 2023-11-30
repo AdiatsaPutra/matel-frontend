@@ -3,7 +3,7 @@
     <div v-if="!isDetail">
       <div>Data Kendaraan {{ leasingName }}</div>
       <v-row class="pt-5 mx-1">
-        <v-text-field v-model="search" placeholder="Cari berdasarkan leasing, cabang, atau nomor polisi" solo dense
+        <v-text-field v-model="search" placeholder="Cari berdasarkan nomor polisi" solo dense
           prepend-inner-icon="mdi-magnify" @input="debouncedFetchLeasing"></v-text-field>
       </v-row>
     </div>
