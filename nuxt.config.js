@@ -54,7 +54,7 @@ export default {
 
   router: {
     middleware: ["auth"],
-  },          
+  },
 
   serverMiddleware: [
     (req, res, next) => {

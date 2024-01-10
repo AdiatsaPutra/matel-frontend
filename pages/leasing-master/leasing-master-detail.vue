@@ -537,6 +537,7 @@ export default {
                 this.showGantikanData = false;
                 this.isLoading = false;
                 this.error = error.message;
+                console.log(error)
               });
           }
         })
